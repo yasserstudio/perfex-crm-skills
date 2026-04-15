@@ -4,7 +4,7 @@ description: Use whenever the user is building or debugging a Perfex CRM custom 
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.1.0"
+  version: "1.0.0"
 ---
 
 # Perfex Custom Themes & Client Area

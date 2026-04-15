@@ -8,52 +8,53 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 _Nothing yet._
 
-## [1.2.0] — 2026-04-15
-
-### Changed
-
-- **All 7 skill descriptions broadened with colloquial trigger phrases.** Every description now includes how real users actually phrase the problem (e.g. "my Perfex email isn't sending", "Pay Now button loses its value", "FK won't create in Perfex", "my custom field isn't showing in the client portal"). Still under the 1024-char spec limit. **This broadens triggering — skills will now fire on phrases they previously missed. No previously-covered phrases were removed.** Per versioning policy, that's a MINOR bump.
-- **All 7 skills now open with a second-person persona paragraph** right after the H1 (e.g. "You are a Perfex CRM security engineer. Your job is to…"). This gives the agent a clear role to commit to before reading the instructions — pattern borrowed from Anthropic's skill-writing guide and `coreyhaines31/marketingskills`.
-- **Every SKILL.md now ends with a `## Related skills` section** mapping cross-skill relationships (e.g. `perfex-email` links to `perfex-module-dev` for cron registration, `perfex-database` for retry-queue DDL, `perfex-security` for PII logging). Improves discoverability across the collection.
-- Per-skill `metadata.version` bumped `1.0.0` → `1.1.0` on all 7.
-- `marketplace.json` repo metadata version bumped to `1.2.0`.
-
-### Why
-
-An audit against `coreyhaines31/marketingskills` (36 skills, v1.7.0) surfaced three content-level gaps: pushier/more-colloquial descriptions, second-person persona, and cross-skill discovery. No infrastructure changes this release — the existing validator, CI, marketplace manifest, and versioning policy all stay as-is.
-
-## [1.1.0] — 2026-04-15
-
-### Added
-
-- `.claude-plugin/marketplace.json` — repo is now installable as a Claude Code plugin, not just a skills folder.
-- `validate-skills.sh` — zero-dependency bash validator for the Agent Skills spec (frontmatter, name pattern, description length, body line count).
-- `validate-skills-official.sh` — wrapper that runs the canonical `agentskills/skills-ref` validator.
-- `.github/workflows/validate-skills.yml` — GitHub Actions CI runs both validators on every push and PR.
-- `VERSIONS.md` — per-skill version table aligned to repo tags, plus dated change notes.
-- `AGENTS.md` — instructions for AI agents editing this repo itself.
-- `.github/pull_request_template.md` and `.github/ISSUE_TEMPLATE/` — standard OSS contribution templates.
-
-### Notes
-
-- **Infrastructure-only release.** No skill content or descriptions changed. Per-skill versions remain at 1.0.0. Agents consuming these skills at v1.1.0 will trigger identically to v1.0.0.
-
 ## [1.0.0] — 2026-04-15
 
-### Added
+First tagged release.
 
-- Initial public release.
-- **`perfex-core-apis`** — Perfex helper functions, hooks, CI loader, auth helpers, logging. Covers the `get_option('key', 'default')` trap.
-- **`perfex-module-dev`** — Module lifecycle, `install.php`, controllers, routes, views, language files. Covers Linux case-sensitivity trap.
-- **`perfex-database`** — Schema conventions, signed-INT FK rule for core tables, utf8mb4 index limit, idempotent migrations.
-- **`perfex-security`** — TOCTOU-safe token consume, rate limiting, open-redirect guards, cross-module dependency loading, PII in logs, `target="_blank"` rules, CSRF exclusions.
-- **`perfex-email`** — `send_simple_email`, template rendering, admin-recipient fallback chain, exponential-backoff retry queue.
-- **`perfex-customfields`** — `tblcustomfields` schema quirks (`only_admin`, `disalow_client_to_edit` typo), field types, programmatic install, `render_custom_fields()`.
-- **`perfex-theme`** — Custom client-area themes, asset hooks, jQuery Validate submit-button-name bug, dark mode with anti-FOUC, RTL support.
-- Repo-level `README.md` with the 8 hard rules that apply across every skill.
-- Spec-compliant structure: skills nested under `skills/`, each SKILL.md with `name` + `description` + `license` + `metadata` frontmatter, bodies under 500 lines, descriptions under 1024 chars per [agentskills.io specification](https://agentskills.io/specification).
+### Skills
 
-[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...v1.1.0
+Seven Agent Skills, each spec-compliant per [agentskills.io/specification](https://agentskills.io/specification), each triggered independently by Claude / Cursor / Codex / any spec-compatible agent:
+
+- **`perfex-core-apis`** — Perfex helper functions, hooks (`do_action`/`apply_filters`), CI loader, auth helpers, logging. Prevents the `get_option('key', 'default')` trap where the second argument is silently ignored.
+- **`perfex-module-dev`** — Module lifecycle, `install.php`, controllers extending `AdminController`/`ClientsController`, routes, views, language files, Linux case-sensitivity trap.
+- **`perfex-database`** — Schema conventions, signed-INT FK rule for core tables (`tblcontacts`/`tblstaff`/`tblclients`), utf8mb4 index limit, idempotent migrations, production schema-drift handling.
+- **`perfex-security`** — TOCTOU-safe single-use tokens, rate-limited enumeration-oracle endpoints, open-redirect guards, cross-module dependency loading, PII-safe logging, `target="_blank"` rules, CSRF exclusions for webhooks.
+- **`perfex-email`** — `$this->emails_model->send_simple_email`, template rendering, admin-recipient fallback chain, exponential-backoff retry queue via `after_cron_run`.
+- **`perfex-customfields`** — `tblcustomfields` schema quirks (`only_admin`, the `disalow_client_to_edit` typo preserved), field types, `fieldto` values, `bs_column`, programmatic install, `render_custom_fields()`.
+- **`perfex-theme`** — Custom client-area themes, asset hooks (`app_customers_head`/`app_customers_footer`), dark mode with anti-FOUC, RTL support, jQuery Validate submit-button-name bug, `filemtime()` cache-busting.
+
+Each SKILL.md:
+- Frontmatter: `name` + `description` (under 1024 chars, with colloquial trigger phrases) + `license: MIT` + `metadata.author`/`metadata.version`
+- Body opens with a second-person persona paragraph
+- Ends with a `## Related skills` section for cross-skill discovery
+
+### Infrastructure
+
+- **`.claude-plugin/marketplace.json`** — repo is installable as a Claude Code plugin
+- **`validate-skills.sh`** — zero-dependency bash validator for the Agent Skills spec
+- **`validate-skills-official.sh`** — wrapper around the canonical `agentskills/skills-ref` library
+- **`.github/workflows/validate-skills.yml`** — CI runs both validators on every push and PR
+- **`VERSIONS.md`** — per-skill version table aligned to repo tags
+- **`AGENTS.md`** — instructions for AI agents editing this repo
+- **`CONTRIBUTING.md`** — versioning policy (description-as-public-API framing, MAJOR/MINOR/PATCH semantics, release cadence — "when NOT to cut a tag")
+- **`README.md`** — public intro + 8 hard rules that apply across every skill
+- **Issue + PR templates** under `.github/`
+
+### The 8 hard rules enforced across every skill
+
+1. `get_option('key') ?: 'default'` — never `get_option('key', 'default')`
+2. FKs to core tables (`tblcontacts`/`tblstaff`/`tblclients`) must be signed `INT`
+3. Production schema may differ from `install.php` — verify with `SHOW CREATE TABLE`
+4. `tblcustomfields.disalow_client_to_edit` — preserve the typo
+5. `tblcustomfields.only_admin` — not `only_admin_area`
+6. Every `target="_blank"` pairs with `rel="noopener noreferrer"`
+7. Migrations are idempotent (`field_exists`/`table_exists` guards)
+8. Email failures must not fail the user flow
+
+### Provenance
+
+Distilled from ~3 years of [Fennec360](https://fennec360.com) Perfex production. Every rule traces to a real incident.
+
+[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.0.0

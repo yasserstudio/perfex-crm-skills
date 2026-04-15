@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Agent skills for building on Perfex CRM — core APIs, module dev, database, security, email, custom fields, and themes",
-    "version": "1.2.0",
+    "version": "1.0.0",
     "repository": "https://github.com/yasserstudio/perfex-crm-skills"
   },
   "plugins": [
