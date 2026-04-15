@@ -6,7 +6,17 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **README hero rewritten** to lead with pain and specificity. Old hero was a feature-list ("Agent skills for building on Perfex CRM…"); new hero names the `get_option()` trap, FK rule, and `disalow_client_to_edit` typo inline so a reader sees the value proposition in the first paragraph. Based on a marketing audit using `coreyhaines31/marketingskills` `page-cro` + `copywriting` frameworks.
+- **Repo GitHub description** rewritten to match hero tone: "Stop debugging Perfex the hard way. 7 Agent Skills teaching Claude / Cursor / Codex the get_option trap, FK rules, and hard-won gotchas from production."
+- **GitHub topics set** (10 tags): `perfex`, `perfex-crm`, `agent-skills`, `claude-code`, `claude-ai`, `anthropic`, `codeigniter`, `php`, `cursor`, `skill`. Previously none — repo was invisible to GitHub topic-based discovery.
+- **Homepage URL set** to `agentskills.io/specification`.
+
+### Added
+
+- **README "See the difference" section** directly under hero — side-by-side `get_option()` code comparison (broken vs correct). Compresses the value prop into 10 seconds.
+- **README FAQ section** (7 questions): what's an Agent Skill, Perfex version coverage, agent compatibility (Cursor/Codex), no-telemetry assurance, CodeCanyon-fork compatibility, offline-operation confirmation, release cadence pointer, how to contribute a gotcha. Improves objection-handling and LLM citability per `ai-seo` framework.
 
 ## [1.0.0] — 2026-04-15
 

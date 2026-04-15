@@ -1,19 +1,27 @@
 # perfex-crm-skills
 
-**Agent skills for building on [Perfex CRM](https://www.perfexcrm.com/).** A focused set of [Agent Skills](https://agentskills.io/specification) that encode the conventions, APIs, and hard-won gotchas of the Perfex CodeIgniter-3-based CRM platform.
-
-Works with any AI coding agent that supports the skills spec — Claude Code, Cursor, Codex, and others.
+**Stop debugging the same Perfex bugs.** Seven [Agent Skills](https://agentskills.io/specification) that teach Claude, Cursor, and Codex what [Perfex CRM](https://www.perfexcrm.com/) actually does — its `get_option()` trap, signed-INT FK rule, the `disalow_client_to_edit` typo you can't fix, and two dozen other gotchas distilled from three years of production on [Fennec360](https://fennec360.com).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Spec: agentskills.io](https://img.shields.io/badge/spec-agentskills.io-green.svg)](https://agentskills.io/specification)
 
 ---
 
-## What this is
+## See the difference
 
-Perfex is a commercial CRM with deep, sometimes surprising conventions — `get_option()` silently ignores its second argument, foreign keys must be signed `INT`, a core column is spelled `disalow_client_to_edit` and always will be. Without context, a coding agent will "fix" these, break the module, and waste everyone's time.
+Without the skill, your AI agent writes what looks right:
 
-This repo ships **7 focused Agent Skills** that tell your agent exactly what to do (and not do) when working on a Perfex module.
+```php
+$value = get_option('my_module_setting', 'default');   // ✗ silently broken
+```
+
+With the skill loaded, it writes what actually works:
+
+```php
+$value = get_option('my_module_setting') ?: 'default';  // ✓ correct
+```
+
+Perfex's `get_option()` silently ignores its second argument — no warning, no error, just an empty string back. That's one of roughly two dozen Perfex-specific patterns this repo encodes so your agent stops shipping silently-broken Perfex code.
 
 ## Install
 
@@ -67,6 +75,42 @@ These rules are duplicated inside each relevant sub-skill because they fire rega
 - **CodeCanyon third-party modules** — those authors own their conventions; you'll need to share their source
 - **Perfex SaaS multi-tenant fork** — a different product with different schemas
 - **CI3 generic patterns** — use a general CodeIgniter skill for those
+
+## FAQ
+
+### What's an Agent Skill?
+
+A markdown file (`SKILL.md`) with YAML frontmatter that tells an AI coding agent when and how to help with a specific task. The agent reads the frontmatter `description` of every available skill, decides which ones apply to the current task, and loads the matching skill's body as context. Skills work with Claude Code, Cursor, Codex, and any agent supporting the [agentskills.io specification](https://agentskills.io/specification).
+
+### Which Perfex versions does this cover?
+
+The gotchas were distilled against Perfex **2.9–3.x** on CodeIgniter 3. Most rules (signed-INT FKs, the `get_option()` trap, the `disalow_client_to_edit` typo, `only_admin` column) apply to every Perfex install since ~2018. When a rule is version-specific, the skill calls it out.
+
+### Will this work with Cursor, Codex, or other AI agents — not just Claude?
+
+Yes. The skills conform to the open [Agent Skills spec](https://agentskills.io/specification) and contain no Claude-Code-specific syntax. Any agent that reads the spec picks them up.
+
+### Does this send data anywhere? Any telemetry?
+
+**No.** These are plain markdown files loaded into your agent's local context. Nothing in this repo phones home, no analytics, no usage tracking. Your Perfex code never leaves your machine.
+
+### Can I use this with a CodeCanyon-forked Perfex (multi-tenant SaaS, custom builds)?
+
+Mostly yes — the core gotchas (`get_option`, FK types, `tblcustomfields` schema) apply to any install with Perfex's schema underneath. SaaS forks that reshaped the schema, renamed tables, or replaced `emails_model` will need their own skills; ours won't catch those divergences.
+
+### Does this need internet access at runtime?
+
+No. Skills are local files. Your agent loads them from `~/.claude/skills/` (or wherever you installed them) with no network calls.
+
+### How often is this updated?
+
+Shipped on meaningful changes, not on a schedule. See [CHANGELOG.md](CHANGELOG.md) and [CONTRIBUTING.md](CONTRIBUTING.md#release-cadence--when-not-to-cut-a-tag) for the release discipline. Most users just `npx skills add` (tracks `main`) and get updates as they land.
+
+### I found a Perfex gotcha that isn't here. How do I add it?
+
+[Open a PR](CONTRIBUTING.md) or [an issue using the "new-gotcha" template](.github/ISSUE_TEMPLATE/new-gotcha.md) citing the real production bug it came from. Speculative advice ("it would be good to mention…") gets rejected — every rule here traces to a real incident.
+
+---
 
 ## Contributing
 
