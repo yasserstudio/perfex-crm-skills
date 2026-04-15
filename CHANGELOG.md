@@ -6,6 +6,12 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [1.2.0] — 2026-04-15
+
+Mixed patch/minor release. Shipped same-day as v1.1.0 because a runtime bug was found via Fennec360 dry-run testing and made sense to ship alongside the legal pass + README reorganization that had also accumulated. Zero pinners at v1.1.0 at release time; tight cadence didn't disrupt anyone.
+
 ### Fixed
 
 - **`app_hash()` → `app_generate_hash()`** across `perfex-core-apis` and `perfex-security`. The `app_hash()` function **does not exist** in Perfex core (verified against `/application/helpers/general_helper.php` in the live Fennec360 Perfex install) — the correct name is `app_generate_hash()`. Five references fixed: helper-reference table, two "Related skills" cross-refs, one code example (`$token = app_generate_hash()`), and the skill's `description` trigger-keywords. An agent following the previous guidance would have generated `$token = app_hash();` and hit a fatal PHP error at runtime. Same class of bug as the `after_contact_added` → `contact_created` hook-name fix in v1.1.0.
@@ -111,6 +117,7 @@ Each SKILL.md:
 
 Distilled from ~3 years of [Fennec360](https://fennec360.com) Perfex production. Every rule traces to a real incident.
 
-[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.0.0

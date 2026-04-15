@@ -4,7 +4,7 @@ description: Use whenever the user is working inside a Perfex CRM codebase and t
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Perfex Core APIs

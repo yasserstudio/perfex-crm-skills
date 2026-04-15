@@ -4,29 +4,30 @@ Per-skill versions, aligned to repo tags. Agents consuming these skills can comp
 
 | Skill | Version | Last Updated | Repo Tag |
 |---|---|---|---|
-| `perfex-core-apis` | 1.1.0 | 2026-04-15 | v1.1.0 |
-| `perfex-module-dev` | 1.1.0 | 2026-04-15 | v1.1.0 |
-| `perfex-database` | 1.1.0 | 2026-04-15 | v1.1.0 |
-| `perfex-security` | 1.1.0 | 2026-04-15 | v1.1.0 |
-| `perfex-email` | 1.1.0 | 2026-04-15 | v1.1.0 |
-| `perfex-customfields` | 1.1.0 | 2026-04-15 | v1.1.0 |
-| `perfex-theme` | 1.1.0 | 2026-04-15 | v1.1.0 |
+| `perfex-core-apis` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-module-dev` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-database` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-security` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-email` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-customfields` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-theme` | 1.2.0 | 2026-04-15 | v1.2.0 |
 
 Repo-wide tag in the last column reflects the release where this skill last appeared at its current version. See [CHANGELOG.md](CHANGELOG.md) for full repo release notes.
 
 ## Recent changes
 
+### 2026-04-15 — v1.2.0
+
+Mixed patch/minor release. Same-day as v1.1.0 because a real runtime bug was found via Fennec360 dry-run testing and shipped alongside the legal pass and README reorg.
+
+- **Fixed:** `app_hash()` → `app_generate_hash()` (runtime bug — `app_hash()` does not exist in Perfex core; agents following v1.1.0 guidance would hit fatal PHP errors).
+- **Added:** `THIRD_PARTY_NOTICES.md`, README "Trademarks and affiliation" section, CONTRIBUTING "Contributor license" section.
+- **Changed:** LICENSE copyright tightened ("Yasser's studio"); README reorganized (install split into 3 options + try-it, FAQ consolidated, version-coverage/not-covered merged in, broken anchor fixed).
+- **Repo metadata:** added `claude-plugin` + `codex` topics (12 total), homepage URL → `/releases/latest`, description tightened, Wiki + Projects disabled.
+
 ### 2026-04-15 — v1.1.0
 
-Real content release with factual corrections and new material.
-
-- **Factual fixes:** `perfex-core-apis` had 3 wrong hook names (`after_contact_added` etc.); corrected to core-verified names (`contact_created`, `contact_updated`, `before_delete_contact`) plus parallel client-company hooks added.
-- **Fixed 2 broken `help.perfexcrm.com` links** (404s) in upstream-docs footers.
-- **5 new official-doc citations** added across skills from audit vs https://help.perfexcrm.com/.
-- **3 new content sections:** Inter-module dependencies (`perfex-module-dev`), Common SMTP pitfalls (`perfex-email`), Bootstrap 3 specificity wars (`perfex-theme`).
-- **Marketing polish:** pain-first README hero, "See the difference" code comparison, FAQ section (7 Qs), 10 GitHub topics set, homepage URL set, repo description rewritten.
-
-All 7 skills bumped 1.0.0 → 1.1.0 together.
+Real content release: factual hook-name corrections, broken-link fixes, 5 new official-doc citations, 3 new content sections (inter-module deps, SMTP pitfalls, Bootstrap specificity), pain-first README hero, FAQ, 10 GitHub topics. All 7 skills bumped 1.0.0 → 1.1.0.
 
 ### 2026-04-15 — v1.0.0
 
