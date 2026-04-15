@@ -1,0 +1,125 @@
+---
+name: perfex-core-apis
+description: Use when calling Perfex core helpers and APIs — get_option, hooks (do_action / apply_filters), the CI loader ($this->load, $CI, get_instance()), app_init sequence, staff/client auth helpers, or common helper functions. Load when the user's task involves reading/writing application state through Perfex's abstractions rather than raw SQL or UI code.
+---
+
+# Perfex Core APIs
+
+Perfex sits on CodeIgniter 3. It adds its own options layer, hook system, and auth helpers on top. Use the Perfex helpers — not raw CI or raw SQL — whenever one exists.
+
+## The `get_option` trap (critical)
+
+```php
+// ❌ WRONG — Perfex get_option does NOT accept a default parameter
+$value = get_option('my_module_setting', 'fallback');
+
+// ✅ RIGHT
+$value = get_option('my_module_setting') ?: 'fallback';
+```
+
+The second argument is silently ignored. You get `''` (empty string) when the option doesn't exist, which then evaluates truthy-false and passes the `?:`. This is the single most common bug in custom Perfex code.
+
+Set options with:
+```php
+update_option('my_module_setting', $value);
+add_option('my_module_setting', $default);  // only inserts if missing
+```
+
+## The CI loader inside Perfex
+
+Inside a controller or model, `$this` is the CI super-object. Elsewhere, use `get_instance()`:
+
+```php
+$CI =& get_instance();
+$CI->load->model('my_module/my_model');
+$CI->db->where('id', 1)->get(db_prefix() . 'mytable');
+```
+
+`db_prefix()` returns the configured table prefix (usually `tbl`). Always use it — never hardcode `tbl`.
+
+## Hook system
+
+Perfex hooks mirror WordPress's action/filter pattern:
+
+```php
+// In your module's module_name.php
+hooks()->add_action('app_init', 'my_module_init');
+hooks()->add_filter('before_invoice_added', 'my_module_filter_invoice');
+
+function my_module_init() { /* runs on every request, after app bootstraps */ }
+function my_module_filter_invoice($data) { return $data; }
+```
+
+Trigger your own:
+```php
+hooks()->do_action('my_module_after_save', $id);
+$data = hooks()->apply_filters('my_module_data', $data);
+```
+
+Common core hooks to know:
+- `app_init` — every request, after core bootstrap
+- `app_admin_head`, `app_admin_footer` — inject into admin layout
+- `app_customers_head`, `app_customers_footer` — client area
+- `after_contact_added`, `after_contact_updated`, `before_contact_deleted`
+- `clients_register_form_fields` — add fields to client signup
+
+## Auth helpers
+
+```php
+is_staff_logged_in()        // bool
+is_client_logged_in()       // bool
+get_staff_user_id()         // int | null
+get_contact_user_id()       // int | null (contact = a person on a client company)
+get_client_user_id()        // int | null
+staff_can('view', 'invoices', $staff_id);  // permission check
+```
+
+Never trust `$_SESSION` directly. Always go through these helpers — they handle impersonation and API key auth correctly.
+
+## CI loader inside hook callbacks
+
+Hook callbacks run outside the current controller. To use the DB or models:
+
+```php
+function my_module_init() {
+    $CI =& get_instance();
+    $CI->load->model('my_module/my_model');
+    // ...
+}
+```
+
+## Logging
+
+Use CI's `log_message()` — writes to `application/logs/`:
+
+```php
+log_message('error', 'My module: something broke: ' . $e->getMessage());
+log_message('debug', 'My module: processed ' . $count . ' items');
+```
+
+**Never** `file_put_contents` to dev paths for production debugging. PII and secrets will leak.
+
+## Common helper reference
+
+| Helper | Purpose |
+|---|---|
+| `db_prefix()` | Table prefix (use for every query) |
+| `site_url($path)` | Absolute URL inside the install |
+| `admin_url($path)` | Absolute URL to admin area |
+| `_l('key', $args)` | Translate a language key |
+| `format_money($amount)` | Currency-format with user locale |
+| `get_company_name($client_id)` | Company name from client ID |
+| `html_purify($html)` | HTMLPurifier-clean user-supplied HTML |
+| `app_hash()` | Random secure hash (password-resets etc.) |
+
+## Gotchas
+
+- **`$this->db->last_query()`** only works if `save_queries => TRUE` in config. In production it may return empty.
+- **`$this->db->affected_rows()`** — always check this after atomic UPDATEs for race-safe token consumption (see `perfex-security`).
+- Model names are loaded singular by default; if a filename is `My_model.php` it loads as `$this->my_model`. Match the filename's case exactly or loader fails silently on case-sensitive filesystems (not macOS, but yes Linux production).
+
+## Upstream docs
+
+- Perfex modules/hooks: https://help.perfexcrm.com/custom-modules/
+- CI3 loader: https://codeigniter.com/userguide3/libraries/loader.html
+- CI3 database: https://codeigniter.com/userguide3/database/
