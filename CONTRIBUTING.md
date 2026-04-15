@@ -61,22 +61,43 @@ This repo uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html), adapt
 
 All seven skills share a single repo version. Per-skill `metadata.version` in each SKILL.md is bumped together with the repo tag — this is simpler than per-skill versioning and 7 skills isn't enough volume to justify the overhead.
 
-## Release process
+## Release cadence — when NOT to cut a tag
 
-1. Update `CHANGELOG.md` — move relevant items from `[Unreleased]` into a new dated version section.
-2. Bump `metadata.version` in every SKILL.md that changed (or all of them, to keep them aligned).
-3. Commit with message like `Release v1.2.0: <short summary>`.
-4. Tag:
+**Default: land changes on `main`, not a tag.** Most users install via `npx skills add <repo>` which tracks `main`. They get improvements continuously without needing new tags.
+
+A tag is a pin target for someone who wants a stable reference. That only has value if tags mark real checkpoints — not "someone made an edit today." Cutting tags too often makes the version number meaningless.
+
+### Cut a tag ONLY when one of these is true
+
+1. **A new skill shipped** — user-facing surface grew, worth signaling.
+2. **A breaking change shipped** — skill renamed or removed, description *narrowed* (stops triggering on phrases it used to cover), or a hard rule reversed. These warrant a MAJOR bump and a clear pin target for anyone on the old version.
+3. **≥10 substantive changes** have accumulated in `[Unreleased]` AND `main` has been stable for ≥2 weeks without further edits. Proves the content has settled.
+4. **A real external consumer asks for a pin target** — someone's automation actually wants to reference a specific version.
+
+### Not reasons to cut a tag
+
+- One skill got a content edit
+- An infra addition (CI, validator, template)
+- A description was broadened (just merge to `main`; users track `main`)
+- It's been a while and we feel like releasing
+
+### Minimum cadence
+
+For this repo: **~1 month between tags is the floor.** Faster is noise. Multiple tags in a week means the content isn't stable enough to tag.
+
+## Release process (when you've decided to cut one)
+
+1. Update `CHANGELOG.md` — move items from `[Unreleased]` into a new dated version section.
+2. Bump per-skill `metadata.version` on skills that materially changed since the last tag.
+3. Bump `.claude-plugin/marketplace.json` repo version.
+4. Update `VERSIONS.md` with the new row and change notes.
+5. Commit with message like `Release vX.Y.Z: <short summary>`.
+6. Tag + push + release:
    ```bash
-   git tag -a v1.2.0 -m "v1.2.0: <short summary>"
+   git tag -a vX.Y.Z -m "vX.Y.Z: <short summary>"
    git push origin main --tags
+   gh release create vX.Y.Z --title "vX.Y.Z — <summary>" --notes-from-tag
    ```
-5. Create a GitHub Release from the tag, pasting the changelog section as the body:
-   ```bash
-   gh release create v1.2.0 --title "v1.2.0" --notes-from-tag
-   ```
-
-Tags are cut on meaningful changes, not on a time schedule. Most users will `npx skills add <repo>` (which tracks `main`); tags give people who want stability a pin target and give everyone a clear audit trail for triggering changes.
 
 ## PR checklist
 
