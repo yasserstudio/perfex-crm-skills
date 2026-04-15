@@ -119,7 +119,7 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 | `format_money($amount)` | Currency-format with user locale |
 | `get_company_name($client_id)` | Company name from client ID |
 | `html_purify($html)` | HTMLPurifier-clean user-supplied HTML |
-| `app_hash()` | Random secure hash (password-resets etc.) |
+| `app_generate_hash()` | Random secure hash (password-resets etc.) |
 
 ## Gotchas
 
@@ -131,7 +131,7 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 
 - **`perfex-module-dev`** — module lifecycle, `install.php`, controllers, and activation hooks all use the helpers in this skill.
 - **`perfex-database`** — when you drop from Perfex helpers down to raw SQL or schema design.
-- **`perfex-security`** — `app_hash()` for tokens, `staff_can()` for permissions, and CSRF rules.
+- **`perfex-security`** — `app_generate_hash()` for tokens, `staff_can()` for permissions, and CSRF rules.
 
 ## Upstream docs
 

@@ -6,6 +6,10 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
+### Fixed
+
+- **`app_hash()` → `app_generate_hash()`** across `perfex-core-apis` and `perfex-security`. The `app_hash()` function **does not exist** in Perfex core (verified against `/application/helpers/general_helper.php` in the live Fennec360 Perfex install) — the correct name is `app_generate_hash()`. Five references fixed: helper-reference table, two "Related skills" cross-refs, one code example (`$token = app_generate_hash()`), and the skill's `description` trigger-keywords. An agent following the previous guidance would have generated `$token = app_hash();` and hit a fatal PHP error at runtime. Same class of bug as the `after_contact_added` → `contact_created` hook-name fix in v1.1.0.
+
 ### Added
 
 - **`THIRD_PARTY_NOTICES.md`** — acknowledges dependencies on `agentskills/skills-ref` (Apache-2.0, runtime-only), the Agent Skills specification, `anthropics/skills` (studied for structure), `coreyhaines31/marketingskills` (used for content audit), and upstream Perfex CRM docs/source (linked only, never mirrored).
