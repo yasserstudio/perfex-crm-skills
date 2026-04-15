@@ -36,12 +36,12 @@ Nothing in this file is a legal agreement on behalf of those third parties. It's
 
 - **Site:** [help.perfexcrm.com](https://help.perfexcrm.com/)
 - **License:** commercial; Perfex is sold on CodeCanyon under the Envato commercial license.
-- **How we use it:** we **link** to specific pages as "upstream docs" for readers who want official citations. We never mirror, scrape, or republish their content. All prose in this repo is our own, written from production experience on [Fennec360](https://fennec360.com).
+- **How we use it:** we **link** to specific pages as "upstream docs" for readers who want official citations. We never mirror, scrape, or republish their content. All prose in this repo is our own, written from production experience maintaining a client's Perfex install.
 
 ## Perfex CRM core source (runtime verification)
 
-- **Source:** a live Perfex install at `/Volumes/Work/Fennec360/crm/application/` (not part of this repo).
-- **License:** commercial (licensed to Fennec360 via CodeCanyon purchase).
+- **Source:** a live Perfex install on the maintainer's local machine (not part of this repo).
+- **License:** commercial (licensed to the client via CodeCanyon purchase).
 - **How we use it:** we `grep` it during audits to verify factual claims (hook names, table schemas, function signatures). No core code is copied into this repo.
 
 ---

@@ -77,7 +77,7 @@ PHP sees neither `$_POST['pay_now']` nor `$_POST['save_draft']` on submit.
 </form>
 ```
 
-Then check `$_POST['action']` server-side. This is the pattern used in fennec360-v2's Pay Now fix.
+Then check `$_POST['action']` server-side. This is the pattern used in a production client theme's Pay Now fix.
 
 ## Overriding a core view
 

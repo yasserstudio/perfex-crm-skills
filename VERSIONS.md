@@ -18,7 +18,7 @@ Repo-wide tag in the last column reflects the release where this skill last appe
 
 ### 2026-04-15 — v1.2.0
 
-Mixed patch/minor release. Same-day as v1.1.0 because a real runtime bug was found via Fennec360 dry-run testing and shipped alongside the legal pass and README reorg.
+Mixed patch/minor release. Same-day as v1.1.0 because a real runtime bug was found via dry-run testing against a client Perfex install and shipped alongside the legal pass and README reorg.
 
 - **Fixed:** `app_hash()` → `app_generate_hash()` (runtime bug — `app_hash()` does not exist in Perfex core; agents following v1.1.0 guidance would hit fatal PHP errors).
 - **Added:** `THIRD_PARTY_NOTICES.md`, README "Trademarks and affiliation" section, CONTRIBUTING "Contributor license" section.

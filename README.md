@@ -1,6 +1,6 @@
 # perfex-crm-skills
 
-**Stop debugging the same Perfex bugs.** Seven [Agent Skills](https://agentskills.io/specification) that teach Claude, Cursor, and Codex what [Perfex CRM](https://www.perfexcrm.com/) actually does — its `get_option()` trap, signed-INT FK rule, the `disalow_client_to_edit` typo you can't fix, and two dozen other gotchas distilled from three years of production on [Fennec360](https://fennec360.com).
+**Stop debugging the same Perfex bugs.** Seven [Agent Skills](https://agentskills.io/specification) that teach Claude, Cursor, and Codex what [Perfex CRM](https://www.perfexcrm.com/) actually does — its `get_option()` trap, signed-INT FK rule, the `disalow_client_to_edit` typo you can't fix, and two dozen other gotchas distilled from three years of maintaining a client's production Perfex install.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Spec: agentskills.io](https://img.shields.io/badge/spec-agentskills.io-green.svg)](https://agentskills.io/specification)
@@ -84,7 +84,7 @@ These rules are duplicated inside each relevant sub-skill because they fire rega
 ## Why this works
 
 1. **Distilled, not copied.** These skills contain our own explanations and patterns. We link to [Perfex's official docs](https://help.perfexcrm.com/) rather than mirroring them — Perfex is commercial software under CodeCanyon license.
-2. **Failure-driven.** Every gotcha traces to a real production incident on [Fennec360](https://fennec360.com). No speculative advice.
+2. **Failure-driven.** Every gotcha traces to a real production incident on a client Perfex install. No speculative advice.
 3. **Verified.** Every factual claim is checked against live Perfex core source or official docs at release time. v1.1.0 caught and fixed three wrong hook names that earlier versions had carried over from community tutorials.
 4. **Conservative.** Skills tell agents what's safe and what will break. They don't encourage refactors or "improvements" — surgical changes only.
 
@@ -137,7 +137,7 @@ MIT. See [LICENSE](LICENSE). Third-party dependencies and their licenses are lis
 
 ## Acknowledgements
 
-Battle-tested on the [Fennec360](https://fennec360.com) Perfex installation over ~3 years of production use. Extracted here so others don't rediscover the same bugs.
+Battle-tested on a client's Perfex installation over ~3 years of production use. Extracted here so others don't rediscover the same bugs.
 
 ## Trademarks and affiliation
 
