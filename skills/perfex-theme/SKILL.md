@@ -1,6 +1,10 @@
 ---
 name: perfex-theme
-description: Use when building or modifying a Perfex custom client-area theme — adding asset hooks, overriding views, handling jQuery Validate quirks, or debugging "submit button name missing from POST" issues.
+description: Use whenever the user is building or debugging a Perfex CRM custom client-area theme — files under `assets/themes/<theme>/` and `application/views/themes/<theme>/`, asset injection via `app_customers_head` / `app_customers_footer` / `app_admin_head` / `app_admin_footer` hooks, overriding core views, dark-mode with `[data-theme="dark"]` plus anti-FOUC inline `<head>` scripts, RTL/Arabic support, theme language strings via `json_encode(_l(...))`, or the jQuery Validate bug where a submit button's `name` attribute is stripped from POST (breaks "Pay Now" / "Save Draft" button detection). Trigger on "Perfex theme", "customer area theme", "client area theme", "jQuery Validate submit", `rel="noopener noreferrer"`, cache-busting theme assets via `filemtime()`, or stale CSS after deploy.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Custom Themes & Client Area

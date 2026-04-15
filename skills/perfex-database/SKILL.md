@@ -1,6 +1,10 @@
 ---
 name: perfex-database
-description: Use when designing or modifying Perfex DB schema — creating module-owned tables, adding foreign keys to Perfex core tables (tblcontacts, tblstaff, tblclients), writing install.php DDL, handling schema drift between install.php and production, or writing migrations.
+description: Use whenever the user writes SQL DDL for a Perfex CRM module, adds a foreign key that references `tblcontacts`, `tblstaff`, `tblclients`, `tblinvoices`, or any `tbl*` core table, designs `tbl<module>_<entity>` schema, writes `install.php` or `uninstall.php` DDL, handles `SHOW CREATE TABLE` / schema drift between committed DDL and production, writes a migration or `ALTER TABLE`, or debugs "incompatible FK" / "Cannot add constraint" errors. Trigger on mentions of `db_prefix()` in a DDL context, `utf8mb4_unicode_ci`, `VARCHAR(191)` vs `VARCHAR(255)`, "Perfex FK type", or any module `install.php` edit. Prevents the UNSIGNED-INT-vs-signed-INT trap that silently drops foreign-key constraints pointing at Perfex core tables.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Database Patterns

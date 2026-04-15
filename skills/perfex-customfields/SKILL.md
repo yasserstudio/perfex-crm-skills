@@ -1,6 +1,10 @@
 ---
 name: perfex-customfields
-description: Use when reading or writing Perfex custom fields — inserting rows into tblcustomfields, reading user values from tblcustomfieldsvalues, programmatically creating/updating custom fields for a module, or debugging custom-field visibility in admin/client views.
+description: Use whenever the user is reading, writing, installing, or debugging Perfex CRM custom fields — `tblcustomfields` (definitions) and `tblcustomfieldsvalues` (values keyed by `relid`), field types (`input`, `textarea`, `select`, `multiselect`, `checkbox`, `date`, `date_picker`, `datetime`, `link`, `colorpicker`, `file`), `fieldto` values (`contacts`, `customers`, `leads`, `invoice`, `estimate`, `contracts`, `tasks`, `tickets`, `subscriptions`, `items`, `proposal`, `expenses`), `only_admin` visibility, `show_on_client_portal`, `bs_column` Bootstrap grid width, the intentionally-misspelled `disalow_client_to_edit` column, or `render_custom_fields()` output. Trigger on any mention of "Perfex custom field", "custom field slug", "custom field value", programmatic field install in `install.php`, or custom-field visibility bugs. Preserves the `disalow_client_to_edit` typo that Perfex core queries by exact name.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Custom Fields

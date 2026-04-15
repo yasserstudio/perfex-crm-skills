@@ -1,6 +1,10 @@
 ---
 name: perfex-core-apis
-description: Use when calling Perfex core helpers and APIs — get_option, hooks (do_action / apply_filters), the CI loader ($this->load, $CI, get_instance()), app_init sequence, staff/client auth helpers, or common helper functions. Load when the user's task involves reading/writing application state through Perfex's abstractions rather than raw SQL or UI code.
+description: Use whenever the user is working inside a Perfex CRM codebase and touches `get_option`, `update_option`, `add_option`, `delete_option`, `hooks()`, `do_action`, `apply_filters`, `register_activation_hook`, `$this->load`, `get_instance()`, `$CI`, `db_prefix()`, `is_staff_logged_in`, `get_staff_user_id`, `staff_can`, `_l()`, or writes any Perfex module code that reads/writes application state through Perfex abstractions. Trigger even when the user says "Perfex helper" or "CI loader inside Perfex" without naming a specific function. This skill prevents the #1 Perfex bug — silently using `get_option('key', 'default')` which ignores the default argument.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Core APIs

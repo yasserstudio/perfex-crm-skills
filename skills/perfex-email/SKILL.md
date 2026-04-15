@@ -1,6 +1,10 @@
 ---
 name: perfex-email
-description: Use when sending transactional emails from a Perfex module — using send_simple_email, rendering email templates, handling admin-recipient fallback, or implementing a retry queue for failed sends.
+description: Use whenever the user is sending, rendering, or debugging transactional email in a Perfex CRM module — `$this->emails_model->send_simple_email`, `send_mail_template`, email template files under `views/emails/`, admin-recipient fallback chains (`my_module_admin_email` → `contact_form_notification_email` → `smtp_email`), retry queues with exponential backoff stored in `tbl<module>_email_retries`, cron-driven retry processing via `after_cron_run`, or debugging "email returned false" / silent SMTP failures. Trigger on mentions of "Perfex email", "transactional email", "email retry queue", "email template merge", or questions like "why did my email not send". Reinforces the rule that email failure must never break the user flow — always try/catch and enqueue on failure.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Email System

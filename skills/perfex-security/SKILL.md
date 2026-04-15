@@ -1,6 +1,10 @@
 ---
 name: perfex-security
-description: Use when the task involves security-sensitive code in a Perfex module — issuing/consuming one-time tokens, handling user-controlled redirects, rate limiting AJAX endpoints that expose boolean state (email-exists checks etc.), cross-module dependency loading, logging PII, or adding target="_blank" links.
+description: Use whenever a Perfex CRM task touches security-sensitive code — issuing or consuming single-use tokens (password reset, magic link, confirmation), race-safe atomic UPDATE with `affected_rows()` check, handling user-controlled redirect URLs (`?next=`, `?redirect=`, `?return_to=`), rate-limiting an AJAX endpoint that leaks boolean state (email-exists, username-taken, coupon-valid), loading another module's model across a dependency boundary (`$this->load->model('other/...')`), logging anything that might contain PII, adding `target="_blank"` links, or wiring a webhook endpoint that must be excluded from CSRF. Trigger on mentions of "TOCTOU", "enumeration", "rate limit", "open redirect", "csrf_exclude_uris", `html_purify`, `app_hash()`, or "Perfex security". Every rule here exists because its absence caused a production incident.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Security Patterns

@@ -1,6 +1,10 @@
 ---
 name: perfex-module-dev
-description: Use when creating or modifying a Perfex module — setting up module.php/install.php, adding controllers, routes, views, language files, or registering the module in the admin. Applies to anything under `modules/<module_name>/`.
+description: Use whenever the user is creating, modifying, or debugging a Perfex CRM module — anything under `modules/<module_name>/` including `module_name.php`, `install.php`, `uninstall.php`, controllers extending `AdminController` or `ClientsController`, models extending `App_Model`, views, language files, asset registration, or menu items via `app_menu->add_sidebar_menu_item`. Trigger when user says "new Perfex module", "register a module", "activation hook", "Perfex admin menu", or mentions `register_activation_hook` / `register_deactivation_hook` / `register_uninstall_hook`. Covers Perfex module lifecycle, CI3 controller conventions, and the Linux production case-sensitivity trap.
+license: MIT
+metadata:
+  author: yasserstudio
+  version: "1.0.0"
 ---
 
 # Perfex Module Development
