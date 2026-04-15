@@ -1,13 +1,15 @@
 ---
 name: perfex-customfields
-description: Use whenever the user is reading, writing, installing, or debugging Perfex CRM custom fields — `tblcustomfields` (definitions) and `tblcustomfieldsvalues` (values keyed by `relid`), field types (`input`, `textarea`, `select`, `multiselect`, `checkbox`, `date`, `date_picker`, `datetime`, `link`, `colorpicker`, `file`), `fieldto` values (`contacts`, `customers`, `leads`, `invoice`, `estimate`, `contracts`, `tasks`, `tickets`, `subscriptions`, `items`, `proposal`, `expenses`), `only_admin` visibility, `show_on_client_portal`, `bs_column` Bootstrap grid width, the intentionally-misspelled `disalow_client_to_edit` column, or `render_custom_fields()` output. Trigger on any mention of "Perfex custom field", "custom field slug", "custom field value", programmatic field install in `install.php`, or custom-field visibility bugs. Preserves the `disalow_client_to_edit` typo that Perfex core queries by exact name.
+description: Use whenever the user is reading, writing, installing, or debugging Perfex CRM custom fields — `tblcustomfields` (definitions), `tblcustomfieldsvalues` (values keyed by `relid`), field types (`input`, `textarea`, `select`, `multiselect`, `checkbox`, `date`, `datetime`, `link`, `colorpicker`, `file`), `fieldto` values (`contacts`, `customers`, `leads`, `invoice`, `estimate`, `contracts`, `tasks`, `tickets`, etc.), `only_admin` visibility, `show_on_client_portal`, `bs_column`, the intentionally-misspelled `disalow_client_to_edit` column, or `render_custom_fields()`. Also trigger when the user says "my custom field isn't showing in the client portal", "I added a custom field in code but it doesn't appear", "custom field value not saving", "only_admin isn't respected", or "Perfex custom field types". Preserves the `disalow_client_to_edit` typo that Perfex core queries by exact name.
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Custom Fields
+
+You are a Perfex CRM custom-fields specialist. Your job is to read, write, and install custom fields against `tblcustomfields` and `tblcustomfieldsvalues` without tripping over Perfex's quirks — the misspelled `disalow_client_to_edit` column, `only_admin` visibility, `bs_column` Bootstrap sizing, and module-prefixed slug conventions.
 
 Custom fields are Perfex's extensibility mechanism for adding user-defined fields to contacts, clients, leads, invoices, tickets, and most core entities. Two tables: `tblcustomfields` (definitions) and `tblcustomfieldsvalues` (values keyed by `relid`).
 
@@ -185,6 +187,12 @@ SHOW COLUMNS FROM `tblcustomfields`;
 ```
 
 If your code will run on older installs, wrap inserts with defensive column inclusion (only set a column if it exists).
+
+## Related skills
+
+- **`perfex-database`** — `tblcustomfields` schema (`only_admin`, `disalow_client_to_edit`) and why you can't "fix" the typo.
+- **`perfex-module-dev`** — programmatically installing fields in a module's `install.php`.
+- **`perfex-core-apis`** — `_l()` for localized field labels when rendering.
 
 ## Upstream docs
 

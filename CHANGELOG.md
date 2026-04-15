@@ -8,6 +8,20 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 _Nothing yet._
 
+## [1.2.0] — 2026-04-15
+
+### Changed
+
+- **All 7 skill descriptions broadened with colloquial trigger phrases.** Every description now includes how real users actually phrase the problem (e.g. "my Perfex email isn't sending", "Pay Now button loses its value", "FK won't create in Perfex", "my custom field isn't showing in the client portal"). Still under the 1024-char spec limit. **This broadens triggering — skills will now fire on phrases they previously missed. No previously-covered phrases were removed.** Per versioning policy, that's a MINOR bump.
+- **All 7 skills now open with a second-person persona paragraph** right after the H1 (e.g. "You are a Perfex CRM security engineer. Your job is to…"). This gives the agent a clear role to commit to before reading the instructions — pattern borrowed from Anthropic's skill-writing guide and `coreyhaines31/marketingskills`.
+- **Every SKILL.md now ends with a `## Related skills` section** mapping cross-skill relationships (e.g. `perfex-email` links to `perfex-module-dev` for cron registration, `perfex-database` for retry-queue DDL, `perfex-security` for PII logging). Improves discoverability across the collection.
+- Per-skill `metadata.version` bumped `1.0.0` → `1.1.0` on all 7.
+- `marketplace.json` repo metadata version bumped to `1.2.0`.
+
+### Why
+
+An audit against `coreyhaines31/marketingskills` (36 skills, v1.7.0) surfaced three content-level gaps: pushier/more-colloquial descriptions, second-person persona, and cross-skill discovery. No infrastructure changes this release — the existing validator, CI, marketplace manifest, and versioning policy all stay as-is.
+
 ## [1.1.0] — 2026-04-15
 
 ### Added
@@ -39,6 +53,7 @@ _Nothing yet._
 - Repo-level `README.md` with the 8 hard rules that apply across every skill.
 - Spec-compliant structure: skills nested under `skills/`, each SKILL.md with `name` + `description` + `license` + `metadata` frontmatter, bodies under 500 lines, descriptions under 1024 chars per [agentskills.io specification](https://agentskills.io/specification).
 
-[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.0.0

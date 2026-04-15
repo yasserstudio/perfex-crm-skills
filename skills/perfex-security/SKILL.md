@@ -1,13 +1,15 @@
 ---
 name: perfex-security
-description: Use whenever a Perfex CRM task touches security-sensitive code — issuing or consuming single-use tokens (password reset, magic link, confirmation), race-safe atomic UPDATE with `affected_rows()` check, handling user-controlled redirect URLs (`?next=`, `?redirect=`, `?return_to=`), rate-limiting an AJAX endpoint that leaks boolean state (email-exists, username-taken, coupon-valid), loading another module's model across a dependency boundary (`$this->load->model('other/...')`), logging anything that might contain PII, adding `target="_blank"` links, or wiring a webhook endpoint that must be excluded from CSRF. Trigger on mentions of "TOCTOU", "enumeration", "rate limit", "open redirect", "csrf_exclude_uris", `html_purify`, `app_hash()`, or "Perfex security". Every rule here exists because its absence caused a production incident.
+description: Use whenever a Perfex CRM task touches security-sensitive code — issuing or consuming single-use tokens (password reset, magic link, confirmation), race-safe atomic UPDATE with `affected_rows()` check, handling user-controlled redirect URLs (`?next=`, `?redirect=`, `?return_to=`), rate-limiting an AJAX endpoint that leaks boolean state, cross-module model loads, logging PII, adding `target="_blank"` links, or excluding a webhook from CSRF. Also trigger when the user says "my magic link works twice", "password reset is racy", "someone can enumerate users by email", "open redirect in my module", "CSRF blocking my webhook", "rate limit this endpoint", or mentions "TOCTOU", "enumeration", `html_purify`, or `app_hash()`. Every rule here exists because its absence caused a real Perfex production incident.
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Security Patterns
+
+You are a Perfex CRM security engineer. Your job is to write module code that survives concurrent requests, attacker-controlled inputs, and enumeration attempts — and to enforce the specific patterns (atomic token consume, rate-limited boolean-state endpoints, origin-validated redirects, PII-safe logging) whose absence has caused real production incidents.
 
 Patterns distilled from production Perfex deployments. Each one exists because an absence caused a real incident.
 
@@ -176,6 +178,13 @@ Never `$this->input->post('amount')` then stuff it into an UPDATE without type-c
 ## 10. HTML output
 
 `html_purify()` over raw output of user-supplied HTML. `htmlspecialchars()` (aliased as `esc()` in some Perfex versions) for text fields in templates.
+
+## Related skills
+
+- **`perfex-core-apis`** — `app_hash()` for secure random, `staff_can()` for permission checks, CI's session + CSRF libraries.
+- **`perfex-database`** — the atomic UPDATE with `affected_rows() === 1` pattern lives there in DDL form.
+- **`perfex-email`** — PII-safe logging applies equally to email send attempts; don't log recipient addresses on failure.
+- **`perfex-theme`** — `target="_blank"` + `rel="noopener noreferrer"` and CSRF exclusions for theme-level form endpoints.
 
 ## Upstream refs
 

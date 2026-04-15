@@ -1,13 +1,15 @@
 ---
 name: perfex-email
-description: Use whenever the user is sending, rendering, or debugging transactional email in a Perfex CRM module — `$this->emails_model->send_simple_email`, `send_mail_template`, email template files under `views/emails/`, admin-recipient fallback chains (`my_module_admin_email` → `contact_form_notification_email` → `smtp_email`), retry queues with exponential backoff stored in `tbl<module>_email_retries`, cron-driven retry processing via `after_cron_run`, or debugging "email returned false" / silent SMTP failures. Trigger on mentions of "Perfex email", "transactional email", "email retry queue", "email template merge", or questions like "why did my email not send". Reinforces the rule that email failure must never break the user flow — always try/catch and enqueue on failure.
+description: Use whenever the user is sending, rendering, or debugging transactional email in a Perfex CRM module — `$this->emails_model->send_simple_email`, `send_mail_template`, email template files under `views/emails/`, admin-recipient fallback chains (`my_module_admin_email` → `contact_form_notification_email` → `smtp_email`), retry queues with exponential backoff stored in `tbl<module>_email_retries`, or cron-driven retry processing via `after_cron_run`. Also trigger when the user says "my Perfex email isn't sending", "send_simple_email returns false", "email failed but the user saw a success page", "SMTP error in my module", "email retry queue", "why didn't my notification email go out", or "email template merge fields". Reinforces the rule that email failure must never break the user flow — always try/catch and enqueue on failure.
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Email System
+
+You are a Perfex CRM email engineer. Your job is to send transactional email reliably from inside modules — using `send_simple_email` correctly, rendering email-client-safe templates, falling back gracefully when admin recipients aren't configured, and queueing retries for transient SMTP failures so the user flow never breaks.
 
 Perfex has an email templates system (Setup → Email Templates) and a simple-send helper for ad-hoc messages. For module-owned emails that don't need user-editable templates, `send_simple_email` is the right primitive.
 
@@ -207,6 +209,12 @@ if (!get_option('smtp_host')) {
     set_alert('warning', 'My Module: SMTP is not configured. Emails will queue but never send.');
 }
 ```
+
+## Related skills
+
+- **`perfex-module-dev`** — registering the `after_cron_run` hook that processes the retry queue.
+- **`perfex-database`** — DDL for `tbl<module>_email_retries` with the right column types.
+- **`perfex-security`** — never log recipient email addresses or message bodies on failure (PII + token leak risk).
 
 ## Upstream docs
 

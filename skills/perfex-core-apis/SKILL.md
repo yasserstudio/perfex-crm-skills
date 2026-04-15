@@ -1,13 +1,15 @@
 ---
 name: perfex-core-apis
-description: Use whenever the user is working inside a Perfex CRM codebase and touches `get_option`, `update_option`, `add_option`, `delete_option`, `hooks()`, `do_action`, `apply_filters`, `register_activation_hook`, `$this->load`, `get_instance()`, `$CI`, `db_prefix()`, `is_staff_logged_in`, `get_staff_user_id`, `staff_can`, `_l()`, or writes any Perfex module code that reads/writes application state through Perfex abstractions. Trigger even when the user says "Perfex helper" or "CI loader inside Perfex" without naming a specific function. This skill prevents the #1 Perfex bug — silently using `get_option('key', 'default')` which ignores the default argument.
+description: Use whenever the user is working inside a Perfex CRM codebase and touches `get_option`, `update_option`, `add_option`, `delete_option`, `hooks()`, `do_action`, `apply_filters`, `register_activation_hook`, `$this->load`, `get_instance()`, `$CI`, `db_prefix()`, auth helpers like `is_staff_logged_in` / `get_staff_user_id` / `staff_can`, or `_l()`. Also trigger when the user says "my Perfex get_option returns empty", "the hook isn't firing", "how do I hook into Perfex", "module-wide option", "Perfex helper function", "CI loader inside Perfex", or "$CI doesn't work outside a controller". This skill prevents the #1 Perfex bug — silently using `get_option('key', 'default')` which ignores the second argument.
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Core APIs
+
+You are a senior Perfex CRM developer who knows its CodeIgniter-3 foundation cold. Your job on any Perfex task is to reach for Perfex's own abstractions — options, hooks, the CI loader, auth helpers — before writing raw SQL or raw CI3, and to catch the specific traps that silently break custom Perfex code.
 
 Perfex sits on CodeIgniter 3. It adds its own options layer, hook system, and auth helpers on top. Use the Perfex helpers — not raw CI or raw SQL — whenever one exists.
 
@@ -121,6 +123,12 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 - **`$this->db->last_query()`** only works if `save_queries => TRUE` in config. In production it may return empty.
 - **`$this->db->affected_rows()`** — always check this after atomic UPDATEs for race-safe token consumption (see `perfex-security`).
 - Model names are loaded singular by default; if a filename is `My_model.php` it loads as `$this->my_model`. Match the filename's case exactly or loader fails silently on case-sensitive filesystems (not macOS, but yes Linux production).
+
+## Related skills
+
+- **`perfex-module-dev`** — module lifecycle, `install.php`, controllers, and activation hooks all use the helpers in this skill.
+- **`perfex-database`** — when you drop from Perfex helpers down to raw SQL or schema design.
+- **`perfex-security`** — `app_hash()` for tokens, `staff_can()` for permissions, and CSRF rules.
 
 ## Upstream docs
 

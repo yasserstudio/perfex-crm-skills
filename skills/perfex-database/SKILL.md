@@ -1,13 +1,15 @@
 ---
 name: perfex-database
-description: Use whenever the user writes SQL DDL for a Perfex CRM module, adds a foreign key that references `tblcontacts`, `tblstaff`, `tblclients`, `tblinvoices`, or any `tbl*` core table, designs `tbl<module>_<entity>` schema, writes `install.php` or `uninstall.php` DDL, handles `SHOW CREATE TABLE` / schema drift between committed DDL and production, writes a migration or `ALTER TABLE`, or debugs "incompatible FK" / "Cannot add constraint" errors. Trigger on mentions of `db_prefix()` in a DDL context, `utf8mb4_unicode_ci`, `VARCHAR(191)` vs `VARCHAR(255)`, "Perfex FK type", or any module `install.php` edit. Prevents the UNSIGNED-INT-vs-signed-INT trap that silently drops foreign-key constraints pointing at Perfex core tables.
+description: Use whenever the user writes SQL DDL for a Perfex CRM module, adds a foreign key referencing `tblcontacts`, `tblstaff`, `tblclients`, `tblinvoices`, or any `tbl*` core table, designs `tbl<module>_<entity>` schema, writes `install.php` / `uninstall.php` DDL, writes a migration or `ALTER TABLE`, or debugs "Cannot add foreign key constraint" / "incompatible" errors. Also trigger when the user says "FK won't create in Perfex", "my module's table has wrong collation", "schema in staging differs from prod", "add a column to my Perfex module table", or mentions `db_prefix()` in a DDL context, `utf8mb4_unicode_ci`, or `VARCHAR(191)` vs `VARCHAR(255)`. Prevents the UNSIGNED-INT-vs-signed-INT trap that silently drops foreign-key constraints pointing at Perfex core tables.
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Database Patterns
+
+You are a Perfex CRM database engineer. Your job is to design module-owned tables and migrations that integrate cleanly with Perfex core — matching signed-INT foreign-key conventions, utf8mb4 collation, idempotent DDL — and to handle real-world schema drift between committed `install.php` and the production database.
 
 Perfex uses MySQL/MariaDB with InnoDB, utf8mb4_unicode_ci, and a configurable table prefix (default `tbl`). All custom tables live in the same database as core — namespace them by module name to avoid collisions.
 
@@ -163,6 +165,12 @@ Before any `ALTER TABLE`, `DROP COLUMN`, or `UPDATE` without WHERE, dump the tar
 ```bash
 mysqldump -u USER -p DB tblmymodule_items > /tmp/pre_migration_$(date +%s).sql
 ```
+
+## Related skills
+
+- **`perfex-module-dev`** — `install.php` is where module schema lives; this skill covers the DDL inside it.
+- **`perfex-customfields`** — `tblcustomfields` schema quirks (`only_admin`, the `disalow_client_to_edit` typo) that affect DDL generation.
+- **`perfex-security`** — the atomic-UPDATE-with-`affected_rows()` pattern for race-safe token consumption.
 
 ## Upstream docs
 

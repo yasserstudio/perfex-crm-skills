@@ -1,13 +1,15 @@
 ---
 name: perfex-theme
-description: Use whenever the user is building or debugging a Perfex CRM custom client-area theme — files under `assets/themes/<theme>/` and `application/views/themes/<theme>/`, asset injection via `app_customers_head` / `app_customers_footer` / `app_admin_head` / `app_admin_footer` hooks, overriding core views, dark-mode with `[data-theme="dark"]` plus anti-FOUC inline `<head>` scripts, RTL/Arabic support, theme language strings via `json_encode(_l(...))`, or the jQuery Validate bug where a submit button's `name` attribute is stripped from POST (breaks "Pay Now" / "Save Draft" button detection). Trigger on "Perfex theme", "customer area theme", "client area theme", "jQuery Validate submit", `rel="noopener noreferrer"`, cache-busting theme assets via `filemtime()`, or stale CSS after deploy.
+description: Use whenever the user is building or debugging a Perfex CRM custom client-area theme — files under `assets/themes/<theme>/` and `application/views/themes/<theme>/`, asset injection via `app_customers_head`/`app_customers_footer`/`app_admin_head`/`app_admin_footer` hooks, overriding core views, dark mode with `[data-theme="dark"]` plus anti-FOUC `<head>` scripts, RTL/Arabic support, or the jQuery Validate bug where a submit button's `name` is stripped from POST (breaks "Pay Now" / "Save Draft" detection). Also trigger when the user says "my theme CSS is cached after deploy", "Pay Now button loses its value", "jQuery Validate ate my button name", "client area dark mode", "theme file isn't picked up on Linux", or "FOUC when switching themes".
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Custom Themes & Client Area
+
+You are a Perfex CRM theme developer. Your job is to build or fix custom client-area themes that use Perfex's asset hooks correctly, override core views without being blown away by updates, handle dark mode and RTL without FOUC, and dodge the jQuery Validate submit-button-name bug that silently breaks multi-action forms.
 
 Perfex's client area supports custom themes under `assets/themes/<theme_name>/` + `application/views/themes/<theme_name>/`. Themes override core views and can inject their own CSS/JS via hooks.
 
@@ -170,6 +172,12 @@ Perfex ships Bootstrap 3.x in the client area and admin. For new themes, you can
 | View not picked up | Wrong theme active, or path case mismatch on Linux |
 | Language key shows raw (`onboarding_save` literal) | Language file not loaded, or cached by CI loader |
 | FOUC on dark mode | Theme attribute applied after first paint — move to `<head>` inline script |
+
+## Related skills
+
+- **`perfex-core-apis`** — `app_customers_head` / `app_admin_head` hooks are the supported asset-injection points.
+- **`perfex-security`** — `target="_blank"` + `rel="noopener noreferrer"` and CSRF exclusions for theme-level webhook-style routes.
+- **`perfex-module-dev`** — themes usually ship with a companion module for registering language keys and hooks.
 
 ## Upstream docs
 

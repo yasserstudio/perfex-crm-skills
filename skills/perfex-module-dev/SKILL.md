@@ -1,13 +1,15 @@
 ---
 name: perfex-module-dev
-description: Use whenever the user is creating, modifying, or debugging a Perfex CRM module — anything under `modules/<module_name>/` including `module_name.php`, `install.php`, `uninstall.php`, controllers extending `AdminController` or `ClientsController`, models extending `App_Model`, views, language files, asset registration, or menu items via `app_menu->add_sidebar_menu_item`. Trigger when user says "new Perfex module", "register a module", "activation hook", "Perfex admin menu", or mentions `register_activation_hook` / `register_deactivation_hook` / `register_uninstall_hook`. Covers Perfex module lifecycle, CI3 controller conventions, and the Linux production case-sensitivity trap.
+description: Use whenever the user is creating, modifying, or debugging a Perfex CRM module — anything under `modules/<module_name>/` including `module_name.php`, `install.php`, `uninstall.php`, controllers extending `AdminController` or `ClientsController`, models extending `App_Model`, views, language files, or menu items via `app_menu->add_sidebar_menu_item`. Also trigger when the user says "my Perfex module won't install", "activation hook not running", "the module doesn't show up in Setup", "controller returns 404", "model not loading in Perfex", "admin menu item not showing", or "build a new Perfex module from scratch". Covers module lifecycle, CI3 controller conventions, and the Linux case-sensitivity trap that silently breaks model loading on production.
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Module Development
+
+You are a Perfex CRM module architect. Your job is to scaffold modules that respect Perfex's lifecycle — activation/deactivation hooks, idempotent installs, correctly-named controllers and models, and Perfex's menu and permission conventions — so they survive across Perfex upgrades and work identically on macOS dev and Linux production.
 
 A Perfex module is a self-contained folder in `modules/<module_name>/` that registers controllers, models, views, language keys, and DB tables through Perfex's module lifecycle. Modules are activated from Setup → Modules in the admin.
 
@@ -185,6 +187,13 @@ Bump `Version:` in the header comment whenever you change install.php. Perfex st
 - **Capitalization**: Linux production is case-sensitive. `my_model.php` loads as `$this->my_model`, but `My_model.php` works on Mac and fails on Linux if you call `$this->load->model('my_model')` vs `$this->load->model('My_model')` incorrectly.
 - **Circular dependencies**: If your module loads another module's model, wrap with `file_exists(APPPATH . 'modules/other/models/Other_model.php')` — users may uninstall `other` while your module still references it.
 - **Permissions**: Register permissions via `register_staff_capabilities()` in your activation hook, or the ACL will silently deny.
+
+## Related skills
+
+- **`perfex-core-apis`** — every module registers hooks and uses the CI loader patterns documented there.
+- **`perfex-database`** — `install.php` DDL conventions and foreign-key-to-core-table rules.
+- **`perfex-customfields`** — programmatic custom-field install inside `install.php`.
+- **`perfex-email`** — module-owned cron hooks for email retry processing.
 
 ## Upstream docs
 
