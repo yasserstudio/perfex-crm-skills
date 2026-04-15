@@ -126,6 +126,7 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 - **`$this->db->last_query()`** only works if `save_queries => TRUE` in config. In production it may return empty.
 - **`$this->db->affected_rows()`** — always check this after atomic UPDATEs for race-safe token consumption (see `perfex-security`).
 - Model names are loaded singular by default; if a filename is `My_model.php` it loads as `$this->my_model`. Match the filename's case exactly or loader fails silently on case-sensitive filesystems (not macOS, but yes Linux production).
+- **`_l()` always runs `sprintf()` internally, even without a label.** `application/helpers/general_helper.php::_l()` unconditionally calls `sprintf($raw_string, $label)` where `$label` defaults to `''`. This means for a lang string like `'Hey %s,'`, calling `_l('greeting')` with NO second arg returns `'Hey ,'` — the `%s` is silently consumed with empty string. The common mistake is wrapping in another sprintf: `sprintf(_l('greeting'), $name)` — by the time sprintf sees the string, there's no `%s` left, so `$name` is dropped. **Correct pattern: pass args to `_l()` directly.** `_l('greeting', $name)` for single-arg, `_l('key', [$a, $b])` for multi-arg (uses `vsprintf` when `$label` is an array). PHP 8 throws `ArgumentCountError` on mismatch which Perfex catches → returns raw string unchanged; that's why `sprintf(_l('key'), $a, $b)` *accidentally* works for multi-%s keys but not single-%s.
 
 ## Related skills
 
