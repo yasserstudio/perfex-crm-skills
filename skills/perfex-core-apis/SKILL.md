@@ -66,8 +66,11 @@ Common core hooks to know:
 - `app_init` — every request, after core bootstrap
 - `app_admin_head`, `app_admin_footer` — inject into admin layout
 - `app_customers_head`, `app_customers_footer` — client area
-- `after_contact_added`, `after_contact_updated`, `before_contact_deleted`
+- **Individual contacts** (people): `contact_created`, `contact_updated`, `before_delete_contact`, `contact_status_changed`
+- **Client companies**: `after_client_created`, `client_updated`, `before_client_deleted`, `client_status_changed`
 - `clients_register_form_fields` — add fields to client signup
+
+**Note the naming inconsistency:** Perfex core uses *both* `after_<thing>_created` *and* plain `<thing>_created` forms inconsistently across entities (e.g., `after_client_created` but `contact_created`). When in doubt, grep the Perfex core source for `do_action\('`. Some community tutorials reference `after_contact_added` — that hook **does not exist in core**; the real name is `contact_created`.
 
 ## Auth helpers
 
@@ -132,6 +135,7 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 
 ## Upstream docs
 
-- Perfex modules/hooks: https://help.perfexcrm.com/custom-modules/
+- Perfex action hooks: https://help.perfexcrm.com/action-hooks/
+- Perfex module basics: https://help.perfexcrm.com/module-basics/
 - CI3 loader: https://codeigniter.com/userguide3/libraries/loader.html
 - CI3 database: https://codeigniter.com/userguide3/database/

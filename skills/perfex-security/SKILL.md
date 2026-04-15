@@ -188,5 +188,6 @@ Never `$this->input->post('amount')` then stuff it into an UPDATE without type-c
 
 ## Upstream refs
 
+- Perfex module security (direct-access prevention, path-traversal guards): https://help.perfexcrm.com/module-security/
 - OWASP token design: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
 - CI3 security: https://codeigniter.com/userguide3/libraries/security.html

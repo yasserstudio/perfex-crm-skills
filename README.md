@@ -62,6 +62,10 @@ These rules are duplicated inside each relevant sub-skill because they fire rega
 7. **Migrations are idempotent** — wrap DDL in `field_exists()` / `table_exists()` checks. `app_init` runs on every page load.
 8. **Email failures must not fail the user flow** — try/catch, log, continue. Enqueue for retry.
 
+## Perfex version coverage
+
+Patterns are tested against **Perfex 2.9–3.x** on CodeIgniter 3. Most rules — signed-INT FKs, the `get_option()` trap, the `disalow_client_to_edit` typo, `only_admin` column, jQuery Validate submit-button bug — apply back to **Perfex 2.3+**. Individual skills call out version-specific gotchas where they exist. SaaS / multi-tenant forks of Perfex that reshape the core schema are **not covered** — those authors own their own conventions.
+
 ## Design principles
 
 1. **Distilled, not copied.** These skills contain our own explanations and patterns. We link to [Perfex's official docs](https://help.perfexcrm.com/) rather than mirroring them. Perfex is commercial software under CodeCanyon license — respect the license.

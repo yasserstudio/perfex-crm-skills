@@ -182,6 +182,68 @@ delete_option('my_module_setting');
 
 Bump `Version:` in the header comment whenever you change install.php. Perfex stores installed version in `tbloptions` (key `my_module_module`) and runs an upgrade path if versions differ — you must implement that path yourself.
 
+## Inter-module dependencies
+
+Perfex has no formal dependency system. If your module depends on another module's model or helpers, you own the graceful-degradation path.
+
+### Declaring the dependency (for humans)
+
+Add it to your module's header comment so admins know:
+
+```php
+/*
+Module Name: My Module
+Description: Sends custom invoices based on Billing module data.
+Requires Module: billing
+Version: 1.0.0
+*/
+```
+
+`Requires Module:` is **not enforced** by Perfex — it's documentation for the admin. You must still handle the runtime case where the required module is missing.
+
+### Runtime load with defensive guard
+
+```php
+// ✅ Guard every cross-module load
+$other_path = APPPATH . 'modules/billing/models/Billing_model.php';
+if (!file_exists($other_path)) {
+    log_message('info', 'my_module: billing module not installed, feature disabled');
+    return;
+}
+$this->load->model('billing/billing_model');
+$this->billing_model->do_something();
+```
+
+### Activation-order problem
+
+Modules activate in the order the admin clicks them. If `my_module` activates before `billing`, your `app_init` hook runs but `billing/billing_model` doesn't exist yet. Two patterns:
+
+1. **Lazy-load on use.** Don't call the other module in `app_init`; wait until a real request needs it. Then the `file_exists` guard protects you.
+2. **Check both activation orders.** If your activation hook needs the other module, gate it:
+   ```php
+   function my_module_activation_hook() {
+       if (!file_exists(APPPATH . 'modules/billing/module.php')) {
+           set_alert('warning', 'My Module: install and activate Billing first, then reactivate My Module.');
+           return;
+       }
+       require_once(__DIR__ . '/install.php');
+   }
+   ```
+
+### When the other module uninstalls
+
+Perfex doesn't fire a "module X uninstalled" hook to dependent modules. The only safe pattern is: **every cross-module call is guarded.** There is no way to register a disable-callback. Assume the other module can vanish between any two requests.
+
+### Don't hardcode paths across modules
+
+```php
+// ❌ fragile — breaks if the admin renames the module
+include(APPPATH . 'modules/billing/helpers/billing_helper.php');
+
+// ✅ use the loader which respects the module system
+$this->load->helper('billing/billing');
+```
+
 ## Common pitfalls
 
 - **Capitalization**: Linux production is case-sensitive. `my_model.php` loads as `$this->my_model`, but `My_model.php` works on Mac and fails on Linux if you call `$this->load->model('my_model')` vs `$this->load->model('My_model')` incorrectly.
@@ -197,5 +259,8 @@ Bump `Version:` in the header comment whenever you change install.php. Perfex st
 
 ## Upstream docs
 
-- https://help.perfexcrm.com/custom-modules/
-- https://codeigniter.com/userguide3/general/controllers.html
+- Perfex module basics: https://help.perfexcrm.com/module-basics/
+- Module file headers (the `Version:` format): https://help.perfexcrm.com/module-file-headers/
+- Common module functions (`register_activation_hook`, `register_cron_task`, `register_payment_gateway`): https://help.perfexcrm.com/common-module-functions/
+- Module security (direct-access prevention, path-traversal guards): https://help.perfexcrm.com/module-security/
+- CI3 controllers: https://codeigniter.com/userguide3/general/controllers.html

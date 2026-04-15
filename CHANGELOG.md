@@ -6,17 +6,44 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
+### Fixed
+
+- **`perfex-core-apis`: corrected 3 wrong hook names.** Previously documented `after_contact_added`, `after_contact_updated`, `before_contact_deleted` — **these hooks do not exist in Perfex core**. The real names are `contact_created`, `contact_updated`, `before_delete_contact`. Verified against live Perfex core source (`application/models/Contacts_model.php`). Also expanded the hook list to include the parallel client-company events (`after_client_created`, `client_updated`, `before_client_deleted`) and a note about Perfex's naming inconsistency between entity types.
+- **Broken upstream-docs links replaced** (both returned 404 before this release):
+  - `perfex-core-apis` and `perfex-module-dev`: `/custom-modules/` → `/module-basics/`
+  - `perfex-theme`: `/custom-theme/` → `/category/customization/`
+
 ### Changed
 
-- **README hero rewritten** to lead with pain and specificity. Old hero was a feature-list ("Agent skills for building on Perfex CRM…"); new hero names the `get_option()` trap, FK rule, and `disalow_client_to_edit` typo inline so a reader sees the value proposition in the first paragraph. Based on a marketing audit using `coreyhaines31/marketingskills` `page-cro` + `copywriting` frameworks.
-- **Repo GitHub description** rewritten to match hero tone: "Stop debugging Perfex the hard way. 7 Agent Skills teaching Claude / Cursor / Codex the get_option trap, FK rules, and hard-won gotchas from production."
-- **GitHub topics set** (10 tags): `perfex`, `perfex-crm`, `agent-skills`, `claude-code`, `claude-ai`, `anthropic`, `codeigniter`, `php`, `cursor`, `skill`. Previously none — repo was invisible to GitHub topic-based discovery.
+- **README hero rewritten** to lead with pain and specificity. Old hero was a feature-list; new hero names the `get_option()` trap, FK rule, and `disalow_client_to_edit` typo inline.
+- **Repo GitHub description** rewritten to match hero tone.
+- **GitHub topics set** (10 tags): `perfex`, `perfex-crm`, `agent-skills`, `claude-code`, `claude-ai`, `anthropic`, `codeigniter`, `php`, `cursor`, `skill`.
 - **Homepage URL set** to `agentskills.io/specification`.
 
 ### Added
 
-- **README "See the difference" section** directly under hero — side-by-side `get_option()` code comparison (broken vs correct). Compresses the value prop into 10 seconds.
-- **README FAQ section** (7 questions): what's an Agent Skill, Perfex version coverage, agent compatibility (Cursor/Codex), no-telemetry assurance, CodeCanyon-fork compatibility, offline-operation confirmation, release cadence pointer, how to contribute a gotcha. Improves objection-handling and LLM citability per `ai-seo` framework.
+- **5 new upstream-doc references** cited directly in the relevant skills' "Upstream docs" footers, from an audit against https://help.perfexcrm.com/:
+  - `perfex-core-apis` now cites `/action-hooks/`
+  - `perfex-module-dev` now cites `/common-module-functions/`, `/module-file-headers/`, and `/module-security/`
+  - `perfex-theme` now cites `/applying-custom-css-styles/`
+  - `perfex-security` now cites `/module-security/`
+- **`perfex-module-dev` — new "Inter-module dependencies" section.** Documents the `Requires Module:` header convention, runtime defensive-load pattern, the activation-order problem (neither order works without guards), what happens when a dependency uninstalls (no hook fires — guard every call), and why cross-module path hardcoding breaks.
+- **`perfex-email` — new "Common SMTP pitfalls" section.** Six failure modes that look like application bugs but aren't: misleading `smtp_host`/`smtp_port` errors, enabling `mail_debug` for setup visibility, Gmail/Workspace DMARC `From:` rejection, using `print_debugger()` to see actual SMTP responses, CI's 5-second default `smtp_timeout`, and the `false`-return-without-exception trap.
+- **`perfex-theme` — new "Overriding Perfex's Bootstrap 3 — specificity wars" section.** Three strategies (wrapper class, namespaced `!important`, CSS layers) plus three anti-patterns (blanket `!important`, relying on core-internal IDs, editing the default theme in place).
+- **README "See the difference" section** — side-by-side `get_option()` broken-vs-correct comparison at the top.
+- **README FAQ section** — 7 Qs covering Agent Skill basics, Perfex version coverage, Cursor/Codex compatibility, no-telemetry assurance, CodeCanyon-fork handling, offline operation, release cadence, contribution path.
+- **README "Perfex version coverage" callout** — explicit coverage statement (2.9–3.x tested, most rules apply back to 2.3+, SaaS forks not covered).
+
+### Verified
+
+Audit against https://help.perfexcrm.com/ (2026-04-15) confirmed the following specific claims hold against official docs or live Perfex core source:
+- `get_option()` doesn't accept a default parameter
+- `tblcustomfields` uses `only_admin` and preserves the `disalow_client_to_edit` typo
+- `$this->emails_model->send_simple_email($to, $subject, $body)` signature
+- Signed-INT FK convention for core tables
+- Module file header format (`Version:`, `Requires at least:`)
+
+No factual conflicts found beyond the 3 corrected hook names.
 
 ## [1.0.0] — 2026-04-15
 

@@ -163,6 +163,67 @@ Perfex ships Bootstrap 3.x in the client area and admin. For new themes, you can
 - Error containers: `role="alert" aria-live="polite"`.
 - Add `<main id="main-content">` + a skip link.
 
+## Overriding Perfex's Bootstrap 3 — specificity wars
+
+Perfex ships Bootstrap 3.x across admin and client areas, plus inline styles on many core views. Your custom theme CSS will lose most specificity battles by default because:
+
+1. Perfex loads its CSS *after* your custom theme injection (depending on hook order), which means same-specificity selectors favor Perfex.
+2. Many Perfex core components use inline `style=""` attributes, which only `!important` overrides.
+3. Bootstrap 3 uses `.btn-primary`, `.form-control` etc. — shallow single-class selectors that your `:root` semantic variables won't touch.
+
+### Strategy 1 — scope with a wrapper class (preferred)
+
+Add a theme-root class to your overridden views and scope everything:
+
+```html
+<!-- application/views/themes/my_theme/layouts/default.php -->
+<body class="my-theme-v2">
+```
+
+```css
+.my-theme-v2 .btn-primary {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+}
+.my-theme-v2 .form-control {
+    border-radius: 8px;
+    border-color: #e2e8f0;
+}
+```
+
+Two classes of specificity (`.wrapper .target`) beats Bootstrap's single class (`.target`) without needing `!important`. Scales to any depth.
+
+### Strategy 2 — `!important` with a namespaced helper class
+
+When you can't wrap the parent (e.g., Perfex renders the `<body>` from core):
+
+```css
+.my-theme-btn--override {
+    background: var(--brand-primary) !important;
+}
+```
+
+Apply via override of the specific button's view. `!important` on a single namespaced class is safer than `!important` sprinkled across `.btn-primary` globally — the namespace makes it grep-able and removable later.
+
+### Strategy 3 — CSS layer (modern browsers only)
+
+If you know your audience uses modern browsers, `@layer` lets Perfex's styles sit in one layer and yours in a higher one:
+
+```css
+@layer perfex, mytheme;
+@layer mytheme {
+    .btn-primary { background: var(--brand-primary); }
+}
+```
+
+Doesn't need Perfex to opt in — your `@layer mytheme` wins against any unlayered Perfex CSS. **Caveat:** client-area IE/Safari <15.4 fall back to normal specificity. Perfex admin is power-user territory and usually Chrome/Firefox, but check your audience.
+
+### Anti-patterns
+
+- **Blanket `!important` on every rule.** Quickly becomes a specificity ceiling you can't escape — next override needs `!important` too, then the next. Scope with a wrapper class instead.
+- **Using `#wrapper` or other core-internal IDs as your specificity anchor.** Perfex may rename these across versions; your CSS silently breaks.
+- **Editing Perfex's `application/views/themes/perfex/` directly.** Blown away on upgrade. Copy to your theme's subtree and edit there — the override mechanism is designed for this.
+
 ## Debugging checklist
 
 | Symptom | Likely cause |
@@ -181,5 +242,6 @@ Perfex ships Bootstrap 3.x in the client area and admin. For new themes, you can
 
 ## Upstream docs
 
-- Perfex theme dev: https://help.perfexcrm.com/custom-theme/
+- Perfex customization guides: https://help.perfexcrm.com/category/customization/
+- Applying custom CSS styles (`custom.css` + Theme Style module): https://help.perfexcrm.com/applying-custom-css-styles/
 - jQuery Validate: https://jqueryvalidation.org/

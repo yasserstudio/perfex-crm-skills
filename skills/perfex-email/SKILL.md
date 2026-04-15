@@ -210,6 +210,55 @@ if (!get_option('smtp_host')) {
 }
 ```
 
+## Common SMTP pitfalls
+
+The most common reason `send_simple_email` returns `false` or throws has nothing to do with your code — it's SMTP configuration. Know these before you debug application logic:
+
+### 1. `smtp_host` / `smtp_port` mismatch gives misleading errors
+
+The `Setup → Settings → Email` form accepts any value. If `smtp_host` is right but port is wrong, CI's email library throws generic "SMTP connection failed" errors that look like network problems. **Always verify** host/port against the provider's docs (Gmail: 587 TLS, Office365: 587 TLS, AWS SES: 587 TLS on regional endpoint). Port 25 almost never works on shared hosting — blocked outbound.
+
+### 2. Enable `mail_debug` during initial setup
+
+In `application/config/email.php`:
+```php
+$config['mail_debug'] = TRUE;
+```
+This surfaces the actual SMTP conversation. Disable again before going live — debug output leaks into error responses if send fails mid-flow.
+
+### 3. Gmail / Workspace: DMARC rejects `From:` spoofing
+
+If you set `smtp_email = you@gmail.com` but `From:` on the message is `noreply@yourapp.com`, Gmail's DMARC policy rejects the send entirely. Two fixes:
+- Set `From:` to match the authenticated SMTP account, OR
+- Use a provider (SendGrid, AWS SES, Postmark) with domain-authenticated DKIM for `noreply@yourapp.com`
+
+Perfex's admin notifications use `smtp_email` as `From:` by default — which is why Gmail-based installs sometimes silently stop sending admin emails after a domain config change.
+
+### 4. `$this->email->print_debugger()` is your friend
+
+Inside a try/catch around `send_simple_email`:
+```php
+try {
+    $sent = $this->emails_model->send_simple_email($to, $subject, $body);
+    if (!$sent) {
+        log_message('error', 'email failed: ' . $this->email->print_debugger(['headers']));
+    }
+} catch (Throwable $e) { /* ... */ }
+```
+`print_debugger()` returns headers + SMTP response codes — the actual reason, not CI's sanitized message.
+
+### 5. CI's `$config['smtp_timeout']` defaults to 5 seconds
+
+Slow providers (AWS SES cold region, mail.com, any TLS handshake over high-latency link) exceed this. Bump in `application/config/email.php`:
+```php
+$config['smtp_timeout'] = 30;
+```
+Timeout errors look identical to auth errors in Perfex's logs — a too-short timeout is a silent root cause of "email works locally, fails in production."
+
+### 6. `send_simple_email` returns `false`, no exception
+
+CI's email library catches most failure modes and returns `false` without throwing. **Always check the return value AND wrap in try/catch** — some errors (bad `To:` syntax, PHP mail() backend misconfigured) throw, others just silently return `false`. Your retry-queue code should handle both.
+
 ## Related skills
 
 - **`perfex-module-dev`** — registering the `after_cron_run` hook that processes the retry queue.
