@@ -6,7 +6,14 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+
+- **Anonymized the specific client name** across all public files in the repo. Every reference to the maintaining client now reads as "a client" / "a client project" / "a client's Perfex install" / similar. 11 mentions scrubbed across `README.md`, `CHANGELOG.md`, `VERSIONS.md`, `THIRD_PARTY_NOTICES.md`, and one skill body (`skills/perfex-theme/SKILL.md`). GitHub `v1.2.0` release notes edited via `gh release edit` to scrub one additional reference. `v1.0.0` and `v1.1.0` release notes were already clean.
+- **Provenance language preserved.** Claims of "3 years of production" and "verified against live core source" are intact — the authority signal doesn't depend on naming the client.
+
+### Note on commit history
+
+Historical commit messages (before this commit) still reference the client name. Rewriting git history is destructive (invalidates existing clones, breaks GitHub permalinks, strips signatures). Forward-only scrub from this commit onward. Anyone performing a full `git log --all` audit can find the historical references; the bet is the active surface (README, CHANGELOG, release notes, search engines, LLM citations) is what matters.
 
 ## [1.2.0] — 2026-04-15
 
