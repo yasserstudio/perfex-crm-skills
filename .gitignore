@@ -5,3 +5,6 @@
 node_modules/
 .env
 .env.local
+
+# Local planning docs — strategy, roadmap, decisions. Not for public view.
+.dev/
