@@ -133,10 +133,20 @@ PRs welcome. New gotchas should cite a real incident — speculative advice gets
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). Third-party dependencies and their licenses are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Acknowledgements
 
 Battle-tested on the [Fennec360](https://fennec360.com) Perfex installation over ~3 years of production use. Extracted here so others don't rediscover the same bugs.
 
-**Not affiliated with Perfex CRM or its vendor.** "Perfex" is a trademark of its respective owner; this repo is an independent community skill collection.
+## Trademarks and affiliation
+
+**This repo is independent and not affiliated with, endorsed by, or sponsored by any of the products it mentions.** All trademarks are the property of their respective owners, referenced here nominatively to describe compatibility.
+
+- **Perfex CRM®** is a product of its respective vendor, sold on CodeCanyon. This repo contains our own prose; we link to `help.perfexcrm.com` rather than mirroring it.
+- **Claude™, Claude Code™, and Anthropic®** are trademarks of Anthropic, PBC.
+- **Cursor®** is a trademark of Anysphere Inc.
+- **Codex®** and **OpenAI®** are trademarks of OpenAI.
+- **Agent Skills** and the specification at [agentskills.io](https://agentskills.io/specification) are maintained by the AgentSkills community; this repo implements that spec as a conforming skill collection.
+
+Mention of a product name does not imply endorsement of, by, or any business relationship with that product's vendor.

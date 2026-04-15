@@ -6,7 +6,15 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
-_Nothing yet._
+### Added
+
+- **`THIRD_PARTY_NOTICES.md`** — acknowledges dependencies on `agentskills/skills-ref` (Apache-2.0, runtime-only), the Agent Skills specification, `anthropics/skills` (studied for structure), `coreyhaines31/marketingskills` (used for content audit), and upstream Perfex CRM docs/source (linked only, never mirrored).
+- **README "Trademarks and affiliation" section** — nominatively credits Perfex CRM®, Claude™/Claude Code™/Anthropic®, Cursor®, Codex®/OpenAI®, and the AgentSkills spec. Clarifies the repo is independent and not affiliated with any named vendor.
+- **CONTRIBUTING.md "Contributor license" section** — explicit statement that PR contributions are assumed MIT-licensed, without requiring a separate CLA.
+
+### Changed
+
+- **LICENSE copyright holder** tightened from "Yasser (yasserstudio)" to "Yasser's studio".
 
 ## [1.1.0] — 2026-04-15
 

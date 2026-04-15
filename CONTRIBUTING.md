@@ -131,6 +131,17 @@ If content later turns out to be wrong (factual error, broken link, outdated cla
 - **Generic CodeIgniter 3 advice.** Use a general CI3 skill for that. This repo is Perfex-specific.
 - **Third-party CodeCanyon module patterns.** Those authors own their conventions.
 
+## Contributor license
+
+By submitting a pull request or issue containing code, text, or other creative content, you agree that:
+
+- Your contribution is **licensed under the same [MIT License](LICENSE)** that covers the rest of the project, and
+- You have the right to submit it — it's your original work, or you have permission from the copyright holder to contribute it under MIT.
+
+We don't require a formal CLA (Contributor License Agreement) signature. Submitting a PR is your agreement. If your employer or a third party holds rights to the content, get their permission before contributing.
+
+This applies to everything in the repo — SKILL.md content, code in `scripts/`, workflow files, docs, and this CONTRIBUTING.md itself.
+
 ## Questions
 
-Open an issue. For anything security-sensitive (a gotcha that would let someone exploit a real Perfex install), email the maintainer privately before opening a public issue.
+Open an issue or discussion. For anything security-sensitive (a gotcha that would let someone exploit a real Perfex install), email the maintainer privately before opening a public issue.
