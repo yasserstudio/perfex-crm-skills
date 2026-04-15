@@ -4,7 +4,7 @@ description: Use whenever the user writes SQL DDL for a Perfex CRM module, adds 
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Database Patterns

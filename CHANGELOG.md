@@ -6,6 +6,12 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
+_Nothing yet._
+
+## [1.1.0] — 2026-04-15
+
+**Real content release.** Factual corrections, new sections, improved discoverability. Shipped in build-in-public mode (see [CONTRIBUTING.md](CONTRIBUTING.md#release-cadence--build-in-public)).
+
 ### Fixed
 
 - **`perfex-core-apis`: corrected 3 wrong hook names.** Previously documented `after_contact_added`, `after_contact_updated`, `before_contact_deleted` — **these hooks do not exist in Perfex core**. The real names are `contact_created`, `contact_updated`, `before_delete_contact`. Verified against live Perfex core source (`application/models/Contacts_model.php`). Also expanded the hook list to include the parallel client-company events (`after_client_created`, `client_updated`, `before_client_deleted`) and a note about Perfex's naming inconsistency between entity types.
@@ -93,5 +99,6 @@ Each SKILL.md:
 
 Distilled from ~3 years of [Fennec360](https://fennec360.com) Perfex production. Every rule traces to a real incident.
 
-[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.0.0

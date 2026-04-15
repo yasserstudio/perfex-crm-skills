@@ -61,29 +61,44 @@ This repo uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html), adapt
 
 All seven skills share a single repo version. Per-skill `metadata.version` in each SKILL.md is bumped together with the repo tag — this is simpler than per-skill versioning and 7 skills isn't enough volume to justify the overhead.
 
-## Release cadence — when NOT to cut a tag
+## Release cadence — build in public
 
-**Default: land changes on `main`, not a tag.** Most users install via `npx skills add <repo>` which tracks `main`. They get improvements continuously without needing new tags.
+This repo releases in **build-in-public mode**: tags are public checkpoints of real, shipped progress, not rock-solid pin targets frozen against a 2-week stability window. Users who want "the latest with no fuss" install via `npx skills add <repo>` which tracks `main`. Users who want a named checkpoint install a specific tag. Both are valid.
 
-A tag is a pin target for someone who wants a stable reference. That only has value if tags mark real checkpoints — not "someone made an edit today." Cutting tags too often makes the version number meaningless.
-
-### Cut a tag ONLY when one of these is true
+### Cut a tag when any of these is true
 
 1. **A new skill shipped** — user-facing surface grew, worth signaling.
 2. **A breaking change shipped** — skill renamed or removed, description *narrowed* (stops triggering on phrases it used to cover), or a hard rule reversed. These warrant a MAJOR bump and a clear pin target for anyone on the old version.
-3. **≥10 substantive changes** have accumulated in `[Unreleased]` AND `main` has been stable for ≥2 weeks without further edits. Proves the content has settled.
+3. **≥10 substantive changes** have accumulated in `[Unreleased]`. Content polish, factual corrections, new sections, citations all count. Pure cosmetic churn (re-flowing the same paragraph three ways) doesn't.
 4. **A real external consumer asks for a pin target** — someone's automation actually wants to reference a specific version.
 
-### Not reasons to cut a tag
+### What "substantive" means
 
-- One skill got a content edit
-- An infra addition (CI, validator, template)
-- A description was broadened (just merge to `main`; users track `main`)
-- It's been a while and we feel like releasing
+| Counts | Doesn't count |
+|---|---|
+| New or corrected gotcha | Typo fix in existing gotcha (unless factual) |
+| Fixed factual error (hook name, table name, signature) | Re-flowing a paragraph |
+| Added new section (≥1 real pattern with example) | Moving a heading |
+| Added citation to an official-doc URL | Badge styling |
+| Broadened a description to trigger on new phrases | Whitespace-only edits |
+| Fixed a broken link (404 → canonical) | Comment-only edits |
 
 ### Minimum cadence
 
-For this repo: **~1 month between tags is the floor.** Faster is noise. Multiple tags in a week means the content isn't stable enough to tag.
+**≥1 week between tags.** Faster than that suggests the previous tag wasn't a real checkpoint. If you're tempted to tag twice in a week, the second tag is almost certainly a patch (`v1.1.1`), not the next minor.
+
+### What tags guarantee — and what they don't
+
+- ✅ The content at a tag is what shipped. You can pin and trust it won't change underneath you.
+- ✅ CHANGELOG documents what's different from the previous tag.
+- ✅ No factual errors known at release time. We actively audit against Perfex core + official docs.
+- ❌ **No guarantee of "rock-solid, no edits for weeks."** Build-in-public means newer tags may arrive quickly when there's real progress. Pin to a tag only if that's what you want; otherwise track `main`.
+
+### Why we don't enforce a stability window
+
+Stability windows are defensive. They prevent churn when content isn't settled. In practice, our content settles *before* it ships to `main` — the pre-commit audit is stricter than any post-commit window. Forcing a 2-week wait after every change just delays real improvements from reaching pinners without protecting them from anything.
+
+If content later turns out to be wrong (factual error, broken link, outdated claim), that's a PATCH release — which should ship *fast*, not wait for a quarterly window.
 
 ## Release process (when you've decided to cut one)
 

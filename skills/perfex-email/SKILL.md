@@ -4,7 +4,7 @@ description: Use whenever the user is sending, rendering, or debugging transacti
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Email System

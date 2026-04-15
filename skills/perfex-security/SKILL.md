@@ -4,7 +4,7 @@ description: Use whenever a Perfex CRM task touches security-sensitive code — 
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Security Patterns

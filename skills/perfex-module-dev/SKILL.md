@@ -4,7 +4,7 @@ description: Use whenever the user is creating, modifying, or debugging a Perfex
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Perfex Module Development
