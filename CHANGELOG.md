@@ -8,6 +8,22 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 _Nothing yet._
 
+## [1.1.0] — 2026-04-15
+
+### Added
+
+- `.claude-plugin/marketplace.json` — repo is now installable as a Claude Code plugin, not just a skills folder.
+- `validate-skills.sh` — zero-dependency bash validator for the Agent Skills spec (frontmatter, name pattern, description length, body line count).
+- `validate-skills-official.sh` — wrapper that runs the canonical `agentskills/skills-ref` validator.
+- `.github/workflows/validate-skills.yml` — GitHub Actions CI runs both validators on every push and PR.
+- `VERSIONS.md` — per-skill version table aligned to repo tags, plus dated change notes.
+- `AGENTS.md` — instructions for AI agents editing this repo itself.
+- `.github/pull_request_template.md` and `.github/ISSUE_TEMPLATE/` — standard OSS contribution templates.
+
+### Notes
+
+- **Infrastructure-only release.** No skill content or descriptions changed. Per-skill versions remain at 1.0.0. Agents consuming these skills at v1.1.0 will trigger identically to v1.0.0.
+
 ## [1.0.0] — 2026-04-15
 
 ### Added
@@ -23,5 +39,6 @@ _Nothing yet._
 - Repo-level `README.md` with the 8 hard rules that apply across every skill.
 - Spec-compliant structure: skills nested under `skills/`, each SKILL.md with `name` + `description` + `license` + `metadata` frontmatter, bodies under 500 lines, descriptions under 1024 chars per [agentskills.io specification](https://agentskills.io/specification).
 
-[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.0.0
