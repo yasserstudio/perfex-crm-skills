@@ -9,6 +9,9 @@ All notable changes to this repo are documented here. The format is based on [Ke
 ### Added
 
 - **`perfex-database`: `dbforge->add_column` prefix trap** — CI3's `dbforge->add_column()` auto-prepends `dbprefix`, so passing `db_prefix() . 'table'` produces `tbltbltable`. Documented the asymmetry: `list_fields()` needs the prefix, `add_column()` does not. Includes correct/incorrect code examples.
+- **`perfex-database`: `list_fields()` vs `field_exists()`** — when to use each for column existence checks. `field_exists()` for one-off guards, `list_fields()` when looping over multiple columns.
+- **`perfex-database`: dynamic column pattern** — documented Perfex's `rate_currency_X` pattern for per-currency item pricing with auto-created columns via `dbforge`. Covers creation, deletion cleanup, import/export discovery, and when to use a junction table instead.
+- **`perfex-core-apis`: `render_*` form helpers** — documented `render_input()`, `render_textarea()`, `render_select()` with signatures, label resolution (lang key vs raw string), and when to fall back to raw HTML.
 - **`perfex-core-apis`: `total_rows()` UI gate gotcha** — Perfex core views sometimes use `total_rows()` checks to conditionally show form fields, creating chicken-and-egg problems (can't configure a feature until a dependent record exists). Documented the pattern and when to remove the check.
 
 ## [1.2.1] — 2026-04-22

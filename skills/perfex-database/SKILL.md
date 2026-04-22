@@ -183,6 +183,55 @@ if ($CI->db->affected_rows() !== 1) {
 
 See `perfex-security` for the full token lifecycle pattern.
 
+## `list_fields()` vs `field_exists()` — choosing the right check
+
+Both verify column existence, but they serve different purposes:
+
+```php
+// field_exists — checks a single column, cheap, returns bool
+if (!$CI->db->field_exists('new_col', db_prefix() . 'mymodule_items')) {
+    // add the column
+}
+
+// list_fields — returns ALL column names as array, one SHOW COLUMNS query
+$columns = $CI->db->list_fields(db_prefix() . 'mymodule_items');
+if (!in_array('new_col', $columns)) {
+    // add the column
+}
+```
+
+**Use `field_exists()`** when checking one or two specific columns (migrations, guards). **Use `list_fields()`** when you need to check multiple columns in a loop — one query beats N `field_exists()` calls. Both require `db_prefix()` in the table name (unlike `dbforge`).
+
+## Dynamic column pattern (multi-currency pricing)
+
+Perfex core uses a dynamic column pattern for per-currency item pricing. Instead of a separate table, it adds `rate_currency_{currency_id}` columns to `tblitems` on demand:
+
+```php
+$columns = $this->db->list_fields(db_prefix() . 'items');
+$this->load->dbforge();
+
+foreach ($currencies as $currency) {
+    $col = 'rate_currency_' . $currency['id'];
+    if ($currency['isdefault'] == 0 && !in_array($col, $columns)) {
+        $this->dbforge->add_column('items', [
+            $col => [
+                'type' => 'decimal(15,' . get_decimal_places() . ')',
+                'null' => true,
+            ],
+        ]);
+    }
+}
+```
+
+Key behaviors:
+- Base currency price lives in the `rate` column; non-base currencies get `rate_currency_X`
+- Columns are created on first save via `dbforge` (see `Invoice_items_model::add()`)
+- When a currency is deleted, `Currencies_model::delete()` drops the matching column
+- Import/export discovers columns via `list_fields()` — columns must exist before import can populate them
+- The model detects these columns by prefix: `strpos($column, 'rate_currency_') !== false`
+
+This pattern works for any feature where you need per-entity pricing across a small, admin-managed set of variants. Don't use it for high-cardinality dimensions — a junction table is better past ~10 columns.
+
 ## Backup before destructive ops
 
 Before any `ALTER TABLE`, `DROP COLUMN`, or `UPDATE` without WHERE, dump the target table:

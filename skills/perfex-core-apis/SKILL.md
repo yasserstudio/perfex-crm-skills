@@ -121,6 +121,32 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 | `html_purify($html)` | HTMLPurifier-clean user-supplied HTML |
 | `app_generate_hash()` | Random secure hash (password-resets etc.) |
 
+## Form rendering helpers
+
+Perfex provides `render_*` helpers that generate Bootstrap 3 form groups with labels, validation states, and consistent markup. Use these instead of raw HTML in admin views.
+
+```php
+// Text input — second param is a lang key OR raw string
+render_input('field_name', 'lang_key_or_label');
+render_input('field_name', 'My Label');           // raw string works too
+render_input('field_name', 'label', 'default_value', 'number'); // type param
+
+// Textarea
+render_textarea('field_name', 'label');
+render_textarea('field_name', 'label', 'default_value', ['rows' => 4]); // extra attrs
+
+// Select dropdown
+render_select('field_name', $options_array, ['id_key', 'label_key'], 'label');
+// $options_array = [['id' => 1, 'name' => 'Foo'], ...]
+// Third param maps which keys to use for option value and display text
+```
+
+Key behaviors:
+- The label param is first checked as a lang key via `_l()`. If the key exists, the translation is used. If not, the raw string is displayed as-is. This means you can pass either `'invoice_item_add_edit_description'` (lang key) or `'Program Name'` (literal).
+- All helpers wrap output in `<div class="form-group">` with a `<label>` and the input.
+- `render_select` uses Bootstrap Select (selectpicker) by default. The `data-none-selected-text` attribute controls the placeholder — defaults to "Nothing selected".
+- For custom markup (e.g., `step="any"` on number inputs, side-by-side layouts), use raw HTML with the same `form-group` pattern instead of these helpers.
+
 ## Gotchas
 
 - **`$this->db->last_query()`** only works if `save_queries => TRUE` in config. In production it may return empty.
