@@ -10,7 +10,7 @@
 
 **For freelancers and agencies building Perfex CRM modules who use AI coding assistants** (Claude Code, Cursor, Codex, and others).
 
-Latest: **[v1.1.0](https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.1.0)** (2026-04-15) — real content release with factual corrections and three new sections. See [CHANGELOG](CHANGELOG.md).
+Latest: **[v1.3.0](https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.3.0)** (2026-04-22) — dbforge prefix trap, dynamic column pattern, render_* helpers, total_rows UI gate. See [CHANGELOG](CHANGELOG.md).
 
 ---
 

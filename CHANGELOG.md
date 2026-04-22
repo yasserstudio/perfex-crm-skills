@@ -4,7 +4,7 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 > **Why versioning matters for skills:** the `description` field in each SKILL.md frontmatter is what Claude uses to decide when to trigger the skill. A description change is a behavior change. This changelog flags triggering-relevant changes explicitly so users who pin to a tag can audit what their agent will do differently after an upgrade.
 
-## [Unreleased]
+## [1.3.0] — 2026-04-22
 
 ### Added
 
