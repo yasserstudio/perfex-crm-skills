@@ -4,7 +4,7 @@ description: Use whenever the user writes SQL DDL for a Perfex CRM module, adds 
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Perfex Database Patterns
@@ -123,6 +123,30 @@ function my_module_migrate_to_110() {
 ```
 
 Always check `field_exists()` / `table_exists()` before DDL — migrations MUST be idempotent. Admins will re-run `app_init` on every page load.
+
+## The `dbforge->add_column` prefix trap
+
+CI3's `dbforge->add_column()` **auto-prepends** `$this->db->dbprefix` to the table name. If you also pass `db_prefix()`, you get a double prefix and the query fails silently or errors on a non-existent table.
+
+```php
+// ❌ WRONG — produces ALTER TABLE `tbltblitems`
+$this->dbforge->add_column(db_prefix() . 'items', [
+    'new_col' => ['type' => 'VARCHAR(191)', 'null' => true],
+]);
+
+// ✅ RIGHT — dbforge adds the prefix itself
+$this->dbforge->add_column('items', [
+    'new_col' => ['type' => 'VARCHAR(191)', 'null' => true],
+]);
+```
+
+Note: `$this->db->list_fields()` does NOT auto-prefix — you must pass `db_prefix() . 'tablename'` there. The inconsistency is a CI3 quirk.
+
+```php
+// list_fields needs the prefix, add_column does not
+$columns = $this->db->list_fields(db_prefix() . 'items');     // ✅
+$this->dbforge->add_column('items', $field);                   // ✅
+```
 
 ## Query builder vs raw SQL
 

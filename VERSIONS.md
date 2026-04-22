@@ -4,9 +4,9 @@ Per-skill versions, aligned to repo tags. Agents consuming these skills can comp
 
 | Skill | Version | Last Updated | Repo Tag |
 |---|---|---|---|
-| `perfex-core-apis` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-core-apis` | 1.3.0 | 2026-04-22 | v1.3.0 |
 | `perfex-module-dev` | 1.2.0 | 2026-04-15 | v1.2.0 |
-| `perfex-database` | 1.2.0 | 2026-04-15 | v1.2.0 |
+| `perfex-database` | 1.3.0 | 2026-04-22 | v1.3.0 |
 | `perfex-security` | 1.2.0 | 2026-04-15 | v1.2.0 |
 | `perfex-email` | 1.2.0 | 2026-04-15 | v1.2.0 |
 | `perfex-customfields` | 1.2.0 | 2026-04-15 | v1.2.0 |

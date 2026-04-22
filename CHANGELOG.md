@@ -6,6 +6,13 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 ## [Unreleased]
 
+### Added
+
+- **`perfex-database`: `dbforge->add_column` prefix trap** — CI3's `dbforge->add_column()` auto-prepends `dbprefix`, so passing `db_prefix() . 'table'` produces `tbltbltable`. Documented the asymmetry: `list_fields()` needs the prefix, `add_column()` does not. Includes correct/incorrect code examples.
+- **`perfex-core-apis`: `total_rows()` UI gate gotcha** — Perfex core views sometimes use `total_rows()` checks to conditionally show form fields, creating chicken-and-egg problems (can't configure a feature until a dependent record exists). Documented the pattern and when to remove the check.
+
+## [1.2.1] — 2026-04-22
+
 ### Changed
 
 - **Anonymized the specific client name** across all public files in the repo. Every reference to the maintaining client now reads as "a client" / "a client project" / "a client's Perfex install" / similar. 11 mentions scrubbed across `README.md`, `CHANGELOG.md`, `VERSIONS.md`, `THIRD_PARTY_NOTICES.md`, and one skill body (`skills/perfex-theme/SKILL.md`). GitHub `v1.2.0` release notes edited via `gh release edit` to scrub one additional reference. `v1.0.0` and `v1.1.0` release notes were already clean.
