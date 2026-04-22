@@ -1,11 +1,14 @@
-# perfex-crm-skills
+# Perfex CRM Skills for AI Coding Agents
 
-**Stop debugging the same Perfex bugs.** Seven [Agent Skills](https://agentskills.io/specification) that teach Claude, Cursor, and Codex what [Perfex CRM](https://www.perfexcrm.com/) actually does — its `get_option()` trap, signed-INT FK rule, the `disalow_client_to_edit` typo you can't fix, and two dozen other gotchas distilled from three years of maintaining a client's production Perfex install.
+**Stop debugging the same Perfex bugs.** Seven [Agent Skills](https://agentskills.io/specification) that teach Claude Code, Cursor, and Codex what [Perfex CRM](https://www.perfexcrm.com/) actually does — its `get_option()` trap, signed-INT FK rule, the `disalow_client_to_edit` typo you can't fix, and two dozen other gotchas distilled from three years of production Perfex development.
 
+[![GitHub stars](https://img.shields.io/github/stars/yasserstudio/perfex-crm-skills?style=social)](https://github.com/yasserstudio/perfex-crm-skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Spec: agentskills.io](https://img.shields.io/badge/spec-agentskills.io-green.svg)](https://agentskills.io/specification)
 [![Latest release](https://img.shields.io/github/v/release/yasserstudio/perfex-crm-skills?label=latest&color=blue)](https://github.com/yasserstudio/perfex-crm-skills/releases)
 [![CI](https://github.com/yasserstudio/perfex-crm-skills/actions/workflows/validate-skills.yml/badge.svg)](https://github.com/yasserstudio/perfex-crm-skills/actions/workflows/validate-skills.yml)
+
+**For freelancers and agencies building Perfex CRM modules who use AI coding assistants** (Claude Code, Cursor, Codex, and others).
 
 Latest: **[v1.1.0](https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.1.0)** (2026-04-15) — real content release with factual corrections and three new sections. See [CHANGELOG](CHANGELOG.md).
 
@@ -87,6 +90,15 @@ These rules are duplicated inside each relevant sub-skill because they fire rega
 2. **Failure-driven.** Every gotcha traces to a real production incident on a client Perfex install. No speculative advice.
 3. **Verified.** Every factual claim is checked against live Perfex core source or official docs at release time. v1.1.0 caught and fixed three wrong hook names that earlier versions had carried over from community tutorials.
 4. **Conservative.** Skills tell agents what's safe and what will break. They don't encourage refactors or "improvements" — surgical changes only.
+
+## How is this different from Perfex docs?
+
+Perfex's [official documentation](https://help.perfexcrm.com/) tells you the API surface. These skills tell you **what silently breaks**:
+
+- **Docs say** `get_option($key, $default)` works. **Reality:** the second argument is ignored. No warning. Just empty string.
+- **Docs describe** custom field columns. **Reality:** the column is misspelled `disalow_client_to_edit` and you must preserve the typo.
+- **Docs assume** you read them before coding. **Skills inject** at the moment your AI agent writes the code — no manual lookup.
+- **Docs don't cover** production schema drift, FK type mismatches, or `dbforge` auto-prefix traps. **Skills do** — every rule traces to a real incident.
 
 ## FAQ
 
