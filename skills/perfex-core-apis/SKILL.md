@@ -4,7 +4,7 @@ description: Use whenever the user is working inside a Perfex CRM codebase and t
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Perfex Core APIs
@@ -69,6 +69,14 @@ Common core hooks to know:
 - **Individual contacts** (people): `contact_created`, `contact_updated`, `before_delete_contact`, `contact_status_changed`
 - **Client companies**: `after_client_created`, `client_updated`, `before_client_deleted`, `client_status_changed`
 - `clients_register_form_fields` — add fields to client signup
+- `get_country` — filter country data (added in 3.3.0)
+- `customers_navigation_before_logout` — inject into client nav before logout link (3.2.0)
+- `before_admin_ticket_addreply_tabpanel_content` — inject content in ticket reply tab (3.2.0)
+- `after_total_summary_estimatehtml` — after estimate total summary HTML (3.2.0)
+- `after_total_summary_invoicehtml` — after invoice total summary HTML (3.2.0)
+- `estimatepdf_organization_info` — customize estimate PDF org info block (3.2.0)
+
+**Hook timing change (3.2.0):** `after_invoice_added` now fires **before** the invoice email is sent. If your module listens to this hook and assumes the client already received the email, adjust accordingly.
 
 **Note the naming inconsistency:** Perfex core uses *both* `after_<thing>_created` *and* plain `<thing>_created` forms inconsistently across entities (e.g., `after_client_created` but `contact_created`). When in doubt, grep the Perfex core source for `do_action\('`. Some community tutorials reference `after_contact_added` — that hook **does not exist in core**; the real name is `contact_created`.
 
@@ -120,6 +128,11 @@ log_message('debug', 'My module: processed ' . $count . ' items');
 | `get_company_name($client_id)` | Company name from client ID |
 | `html_purify($html)` | HTMLPurifier-clean user-supplied HTML |
 | `app_generate_hash()` | Random secure hash (password-resets etc.) |
+| `register_cron_task($fn)` | Register a function to run during Perfex cron execution |
+| `register_language_files($module, $langs)` | Register module language files for auto-loading |
+| `module_dir_url($module)` | URL to module's directory |
+| `module_dir_path($module)` | Filesystem path to module's directory |
+| `module_libs_path($module, $concat)` | Path to module's `libraries/` directory |
 
 ## Form rendering helpers
 

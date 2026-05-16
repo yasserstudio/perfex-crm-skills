@@ -4,7 +4,7 @@ description: Use whenever the user is reading, writing, installing, or debugging
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.2.0"
+  version: "1.4.0"
 ---
 
 # Perfex Custom Fields
@@ -177,6 +177,16 @@ Perfex ships `render_custom_fields()`:
 ```
 
 In client-area views, pass `'only_customer_portal' => true` to respect `only_admin` and `show_on_client_portal`.
+
+## Required item custom fields (Perfex 3.3.0+)
+
+As of Perfex 3.3.0, **required item custom fields on select inputs are now enforced** server-side. Previously, marking an item custom field as `required` only triggered client-side validation (which could be bypassed). Now:
+
+- If `fieldto = 'items'` and `required = 1` and `type = 'select'`, Perfex validates on save
+- Empty select values are rejected with a validation error
+- This applies to invoice items, estimate items, and proposal items
+
+If your module programmatically creates invoice items, ensure you populate all required item custom fields or the save will fail silently in older code paths that don't check for validation errors.
 
 ## Don't assume core columns haven't drifted
 

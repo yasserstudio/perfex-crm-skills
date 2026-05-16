@@ -4,7 +4,7 @@ description: Use whenever the user is building or debugging a Perfex CRM custom 
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.2.0"
+  version: "1.4.0"
 ---
 
 # Perfex Custom Themes & Client Area
@@ -162,6 +162,35 @@ Perfex ships Bootstrap 3.x in the client area and admin. For new themes, you can
 - Required: `<span aria-label="required">*</span>`.
 - Error containers: `role="alert" aria-live="polite"`.
 - Add `<main id="main-content">` + a skip link.
+
+## Update-safe CSS overrides
+
+Two built-in methods for CSS customization that survive Perfex core updates:
+
+### Method 1: `assets/css/custom.css` file
+
+Create `assets/css/custom.css` in the Perfex root. Perfex auto-loads this file after all other CSS — no hook registration needed. Persists through core updates.
+
+```css
+/* assets/css/custom.css */
+.panel-heading { background: #2A5189; color: #fff; }
+.btn-primary { border-radius: 4px; }
+```
+
+### Method 2: Theme Style module
+
+Activate the built-in **Theme Style** module at **Setup → Modules → Theme Style**. This provides a CSS editor in admin with separate fields for:
+- Admin area custom CSS
+- Client area custom CSS
+
+Stored in the database — survives file-based updates. Preferred for non-developer admins who want quick CSS tweaks without FTP access.
+
+### When to use hooks instead
+
+Use `app_customers_head` / `app_admin_head` hooks (documented above) when:
+- You need cache-busting with `filemtime()`
+- Your CSS is module-scoped and should only load when the module is active
+- You're shipping a full custom theme with its own asset pipeline
 
 ## Overriding Perfex's Bootstrap 3 — specificity wars
 

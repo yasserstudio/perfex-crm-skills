@@ -4,7 +4,7 @@ description: Use whenever a Perfex CRM task touches security-sensitive code — 
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.2.0"
+  version: "1.4.0"
 ---
 
 # Perfex Security Patterns
@@ -179,12 +179,38 @@ Never `$this->input->post('amount')` then stuff it into an UPDATE without type-c
 
 `html_purify()` over raw output of user-supplied HTML. `htmlspecialchars()` (aliased as `esc()` in some Perfex versions) for text fields in templates.
 
+## 11. Deserialization vulnerability (Perfex 3.4.1 patch)
+
+Perfex 3.4.1 patched a critical **unauthenticated remote code execution via insecure deserialization** in a bundled third-party library. This affects most earlier releases. If your module accepts serialized input from users (e.g., cached objects, session-stored complex types):
+
+- **Never `unserialize()` user-controlled input.** Use `json_decode()` instead.
+- If you must unserialize, use the `allowed_classes` option (PHP 7.0+):
+  ```php
+  unserialize($data, ['allowed_classes' => false]);
+  ```
+- Audit any third-party libraries your module bundles for the same pattern.
+
+## 12. CSRF exclusion via filter hook
+
+For module-owned webhook endpoints, prefer the filter hook over editing `config.php` directly:
+
+```php
+// In module_name.php — cleaner than manual config.php editing
+hooks()->add_filter('csrf_exclude_uris', function ($uris) {
+    $uris[] = 'my_module_webhook/callback';
+    return $uris;
+});
+```
+
+This is self-contained in your module and removed automatically on deactivation.
+
 ## Related skills
 
 - **`perfex-core-apis`** — `app_generate_hash()` for secure random, `staff_can()` for permission checks, CI's session + CSRF libraries.
 - **`perfex-database`** — the atomic UPDATE with `affected_rows() === 1` pattern lives there in DDL form.
 - **`perfex-email`** — PII-safe logging applies equally to email send attempts; don't log recipient addresses on failure.
 - **`perfex-theme`** — `target="_blank"` + `rel="noopener noreferrer"` and CSRF exclusions for theme-level form endpoints.
+- **`perfex-payment-gateway`** — webhook CSRF exclusion and signature verification patterns.
 
 ## Upstream refs
 

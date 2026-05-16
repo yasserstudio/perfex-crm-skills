@@ -4,7 +4,7 @@ description: Use whenever the user is creating, modifying, or debugging a Perfex
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.2.0"
+  version: "1.4.0"
 ---
 
 # Perfex Module Development
@@ -243,6 +243,40 @@ include(APPPATH . 'modules/billing/helpers/billing_helper.php');
 // ✅ use the loader which respects the module system
 $this->load->helper('billing/billing');
 ```
+
+## PHP version requirements
+
+| Perfex version | Minimum PHP | Notes |
+|---|---|---|
+| 3.2.0+ | PHP 8.1 | Enforced — won't run on 7.x/8.0 |
+| 3.3.0+ | PHP 8.1 | PHP 8.4 compatibility added |
+| Pre-3.2 | PHP 7.4+ | Officially supported |
+
+**PHP 8.4 session change (Perfex 3.3.0):** During update to 3.3.0, all users are logged out due to session compatibility changes for PHP 8.4. If your module stores session data beyond Perfex's default session handler, test that session data survives this transition.
+
+Set your module's `Requires at least:` header to match the Perfex version you depend on:
+```php
+/*
+Requires at least: 3.2.*
+*/
+```
+
+## Cron task registration
+
+Register module cron work via `register_cron_task()` (preferred over raw `after_cron_run` hook):
+
+```php
+// module_name.php
+register_cron_task('my_module_cron_handler');
+
+function my_module_cron_handler() {
+    // Runs after core cron tasks finish
+    // Cron URL: wget -q -O- http://domain.com/cron/index
+    // Recommended interval: every 5-20 minutes
+}
+```
+
+This is cleaner than `hooks()->add_action('after_cron_run', ...)` and makes the cron dependency explicit.
 
 ## Common pitfalls
 

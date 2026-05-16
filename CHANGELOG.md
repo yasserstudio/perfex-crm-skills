@@ -4,6 +4,40 @@ All notable changes to this repo are documented here. The format is based on [Ke
 
 > **Why versioning matters for skills:** the `description` field in each SKILL.md frontmatter is what Claude uses to decide when to trigger the skill. A description change is a behavior change. This changelog flags triggering-relevant changes explicitly so users who pin to a tag can audit what their agent will do differently after an upgrade.
 
+## [1.4.0] — 2026-05-16
+
+### Added
+
+- **New skill: `perfex-payment-gateway`** — Complete guide to building Perfex payment gateway modules. Covers `App_gateway` class structure, `setId`/`setName`/`setSettings`, `process_payment($data)` implementation, encrypted settings with `decryptSetting()`, webhook CSRF exclusion via filter hook, webhook signature verification, Stripe API (Basil) breaking changes in 3.3.0, and the `register_payment_gateway()` registration pattern. Includes full skeleton with controller for webhook handling.
+- **New skill: `perfex-pdf`** — Complete guide to PDF customization. Covers TCPDF template locations, the `my_` prefix override convention (update-safe), font selection for multi-language (freesans/dejavusans/droidsansfallback), `App_items_table` column customization via hooks, PDF heading language strings, logo configuration, paper size settings, adding custom field data to templates, e-invoice JSON/XML support (3.4.0+), and common pitfalls (blank PDF, RTL, TCPDF CSS limitations).
+- **`perfex-core-apis`: 6 new hooks from Perfex 3.2.0/3.3.0** — `get_country`, `customers_navigation_before_logout`, `before_admin_ticket_addreply_tabpanel_content`, `after_total_summary_estimatehtml`, `after_total_summary_invoicehtml`, `estimatepdf_organization_info`.
+- **`perfex-core-apis`: `after_invoice_added` timing change** — Documents that this hook now fires before email sending (changed in 3.2.0). Modules that assumed the invoice email was already sent when this hook fires need adjustment.
+- **`perfex-core-apis`: 5 new helper functions** — `register_cron_task()`, `register_language_files()`, `module_dir_url()`, `module_dir_path()`, `module_libs_path()`.
+- **`perfex-module-dev`: PHP version requirements table** — Documents minimum PHP 8.1 for Perfex 3.2.0+, PHP 8.4 session compatibility changes in 3.3.0 (all users logged out during update).
+- **`perfex-module-dev`: `register_cron_task()` pattern** — Preferred over raw `after_cron_run` hook for module cron work. Includes cron URL and recommended interval.
+- **`perfex-email`: email language fallback chain** — Documents resolution order (customer language → staff language → system default → skip if empty). Covers template-per-language disabling behavior.
+- **`perfex-customfields`: required item custom field enforcement** — Perfex 3.3.0 now server-side validates required select-type item custom fields. Modules creating invoice items programmatically must populate these or save fails.
+- **`perfex-theme`: update-safe CSS methods** — Documents `assets/css/custom.css` (auto-loaded, survives updates) and Theme Style module (DB-stored CSS editor with admin/client separation).
+- **`perfex-security`: deserialization vulnerability note** — References the critical RCE patched in 3.4.1 (insecure deserialization in bundled library). Includes defensive guidance for module developers.
+- **`perfex-security`: CSRF exclusion via filter hook** — Cleaner pattern using `hooks()->add_filter('csrf_exclude_uris', ...)` instead of manual config.php editing.
+
+### Changed
+
+- All 9 skills (7 existing + 2 new) now at version 1.4.0.
+- README updated with 9 skills table, Perfex 3.4.x coverage note.
+- Related skills sections updated across all skills to cross-reference new `perfex-payment-gateway` and `perfex-pdf` skills.
+
+### Verified
+
+Audit against https://help.perfexcrm.com/ (2026-05-16) confirmed:
+- All 6 new hooks exist in documented changelogs for 3.2.0 and 3.3.0
+- `register_payment_gateway` API matches official docs
+- PDF `my_` prefix convention matches official docs
+- `register_cron_task()` matches `/common-module-functions/` documentation
+- PHP 8.1 minimum enforced from 3.2.0
+- 3.4.1 security advisory confirmed (unauthenticated RCE via insecure deserialization)
+- No new broken links in upstream doc references
+
 ## [1.3.0] — 2026-04-22
 
 ### Added
@@ -134,7 +168,9 @@ Each SKILL.md:
 
 Distilled from ~3 years of maintaining a client's Perfex production install. Every rule traces to a real incident.
 
-[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/yasserstudio/perfex-crm-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yasserstudio/perfex-crm-skills/releases/tag/v1.0.0

@@ -4,7 +4,7 @@ description: Use whenever the user is sending, rendering, or debugging transacti
 license: MIT
 metadata:
   author: yasserstudio
-  version: "1.2.0"
+  version: "1.4.0"
 ---
 
 # Perfex Email System
@@ -200,6 +200,19 @@ private function _bump_retry($row, $error) {
 ```
 
 Cap at 5 attempts. After that, alert the admin (another email!) or leave for manual review via the prune-at-7-days rule.
+
+## Email language fallback
+
+Perfex resolves which language to use for email templates in this order:
+
+1. **Customer language** — if the recipient is a customer/contact, uses their profile language
+2. **Staff language** — if the recipient is staff, uses their configured language
+3. **Lead language** — leads use the system default language
+4. **System default** — fallback when no recipient-specific language is set
+
+If a template is empty for the resolved language, Perfex falls back to the system default language. If that's also empty, the email is **skipped** (not sent with a blank body).
+
+Templates can be disabled per-language in **Setup → Email Templates** — a disabled template for a specific language means that notification won't fire for users configured to that language.
 
 ## SMTP configuration check
 
