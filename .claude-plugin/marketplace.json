@@ -5,14 +5,14 @@
     "url": "https://github.com/yasserstudio"
   },
   "metadata": {
-    "description": "Agent skills for building on Perfex CRM — core APIs, module dev, database, security, email, custom fields, and themes",
-    "version": "1.2.0",
+    "description": "Agent skills for building on Perfex CRM — core APIs, module dev, database, security, email, custom fields, themes, payment gateways, and PDF customization",
+    "version": "1.4.0",
     "repository": "https://github.com/yasserstudio/perfex-crm-skills"
   },
   "plugins": [
     {
       "name": "perfex-crm-skills",
-      "description": "7 focused skills for Perfex CRM module development: Perfex core APIs and hooks (perfex-core-apis), module lifecycle (perfex-module-dev), schema and FK rules (perfex-database), token/CSRF/redirect security (perfex-security), transactional email with retry queue (perfex-email), custom fields with tblcustomfields quirks (perfex-customfields), and custom client-area themes (perfex-theme). Distilled from 3+ years of production Perfex usage.",
+      "description": "9 focused skills for Perfex CRM module development: Perfex core APIs and hooks (perfex-core-apis), module lifecycle (perfex-module-dev), schema and FK rules (perfex-database), token/CSRF/redirect security (perfex-security), transactional email with retry queue (perfex-email), custom fields with tblcustomfields quirks (perfex-customfields), custom client-area themes (perfex-theme), payment gateway modules (perfex-payment-gateway), and PDF template customization (perfex-pdf). Distilled from 3+ years and 40+ modules of production Perfex usage.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -22,7 +22,9 @@
         "./skills/perfex-security",
         "./skills/perfex-email",
         "./skills/perfex-customfields",
-        "./skills/perfex-theme"
+        "./skills/perfex-theme",
+        "./skills/perfex-payment-gateway",
+        "./skills/perfex-pdf"
       ]
     }
   ]

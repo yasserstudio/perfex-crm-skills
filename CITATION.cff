@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Perfex CRM Skills for AI Coding Agents"
+message: "If you use these skills in your workflow, please cite this repository."
+type: software
+authors:
+  - name: "Yasser's studio"
+    alias: yasserstudio
+repository-code: "https://github.com/yasserstudio/perfex-crm-skills"
+url: "https://github.com/yasserstudio/perfex-crm-skills"
+license: MIT
+version: "1.4.0"
+date-released: "2026-05-16"
+keywords:
+  - perfex-crm
+  - agent-skills
+  - claude-code
+  - cursor
+  - codex
+  - codeigniter
+  - ai-coding-assistant
